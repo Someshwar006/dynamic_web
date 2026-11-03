@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Page</title>
+    <link rel="stylesheet" href="./css/add.css">
+</head>
+<body>
+
+<form action="/add" method="post" enctype="multipart/form-data">
+
+    <div class="form-topbar">
+        <div>
+            <h2>Publish & Customize Site Content</h2>
+            <p style="color:var(--slate-600);font-size:14px;margin-top:4px;">Configure navigation, banners, section texts, and footer dynamically</p>
+        </div>
+        <a href="/controls" class="back-link">← Back to Dashboard</a>
+    </div>
+
+    <label>Navigation title</label>
+    <input type="text" name="navigation_title" placeholder="Site title">
+
+    <!-- ================= PAGE 1 ================= -->
+    <h3>PAGE 1</h3>
+    <input type="text" name="page_1" placeholder="Page 1 title">
+
+    <label>Image 1</label>
+    <input type="file" name="page1img1">
+    <input type="text" name="page1img1_headings" placeholder="Heading">
+    <input type="text" name="page1img1_details" placeholder="Details">
+    <input type="text" name="page1img1_button" placeholder="Button">
+
+    <label>Image 2</label>
+    <input type="file" name="page1img2">
+    <input type="text" name="page1img2_headings" placeholder="Heading">
+    <input type="text" name="page1img2_details" placeholder="Details">
+    <input type="text" name="page1img2_button" placeholder="Button">
+
+    <label>Image 3</label>
+    <input type="file" name="page1img3">
+    <input type="text" name="page1img3_headings" placeholder="Heading">
+    <input type="text" name="page1img3_details" placeholder="Details">
+    <input type="text" name="page1img3_button" placeholder="Button">
+
+    <label>Image 4</label>
+    <input type="file" name="page1img4">
+    <input type="text" name="page1img4_headings" placeholder="Heading">
+    <input type="text" name="page1img4_details" placeholder="Details">
+    <input type="text" name="page1img4_button" placeholder="Button">
+
+    <div id="page1sec1">
+        <label>Section Name</label>
+        <input type="text" name="page1sec1_name" placeholder="Section Name">
+        <input type="text" name="page1sec1_details" placeholder="Details">
+        <input type="file" name="page1sec1_file">
+        <input type="text" name="page1sec1_button" placeholder="Button">
+    </div>
+
+    <div class="feature-form-grid">
+
+      <!-- FEATURE 1 -->
+      <div class="feature-input-card">
+        <h3>Feature 1</h3>
+
+        <div class="input-group">
+          <label>Icon / Image</label>
+          <input type="file" name="feature1img" required>
+        </div>
+
+        <div class="input-group">
+          <label>Title</label>
+          <input type="text" name="feature1title" placeholder="Fast Delivery" required>
+        </div>
+
+        <div class="input-group">
+          <label>Subheading</label>
+          <input type="text" name="feature1subtitle" placeholder="Quick and reliable service" required>
+        </div>
+      </div>
+
+      <!-- FEATURE 2 -->
+      <div class="feature-input-card">
+        <h3>Feature 2</h3>
+
+        <div class="input-group">
+          <label>Icon / Image</label>
+          <input type="file" name="feature2img" required>
+        </div>
+
+        <div class="input-group">
+          <label>Title</label>
+          <input type="text" name="feature2title" placeholder="Safe & Secure" required>
+        </div>
+
+        <div class="input-group">
+          <label>Subheading</label>
+          <input type="text" name="feature2subtitle" placeholder="100% safe payments" required>
+        </div>
+      </div>
+
+      <!-- FEATURE 3 -->
+      <div class="feature-input-card">
+        <h3>Feature 3</h3>
+
+        <div class="input-group">
+          <label>Icon / Image</label>
+          <input type="file" name="feature3img" required>
+        </div>
+
+        <div class="input-group">
+          <label>Title</label>
+          <input type="text" name="feature3title" placeholder="Gift Wrapping" required> 
+        </div>
+
+        <div class="input-group">
+          <label>Subheading</label>
+          <input type="text" name="feature3subtitle" placeholder="Beautiful gift packaging" required>
+        </div>
+      </div>
+
+      <!-- FEATURE 4 -->
+      <div class="feature-input-card">
+        <h3>Feature 4</h3>
+
+        <div class="input-group">
+          <label>Icon / Image</label>
+          <input type="file" name="feature4img" required>
+        </div>
+
+        <div class="input-group">
+          <label>Title</label>
+          <input type="text" name="feature4title" placeholder="24/7 Support" required>
+        </div>
+
+        <div class="input-group">
+          <label>Subheading</label>
+          <input type="text" name="feature4subtitle" placeholder="Always here to help" required>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIBBON -->
+    <label>Ribbon (Primary)</label>
+    <select name="ribbonPrimary" id="ribbonSelect1">
+        <option value="">Select Ribbon</option>
+    </select>
+
+    <label>Ribbon (Secondary)</label>
+    <select name="ribbonSecondary" id="ribbonSelect2">
+        <option value="">Select Ribbon</option>
+    </select>
+
+    <!-- CATEGORY SHOWCASE SETUP -->
+    <div class="category-box" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:20px; margin:24px 0;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+        <div>
+          <h4 style="margin:0; font-size:16px; font-weight:700; color:#1e293b;">Homepage Showcase Categories</h4>
+          <p style="margin:4px 0 0; font-size:13px; color:#64748b;">Choose the store categories to feature on the homepage.</p>
+        </div>
+        <button type="button" id="addCategorySlotBtn" style="background:#4f46e5; color:#fff; border:none; padding:8px 14px; border-radius:6px; font-weight:600; font-size:13px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+          <span>+</span> Add Category Slot
+        </button>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+        <label for="categoryCount" style="margin:0; font-size:13px; font-weight:600; color:#475569;">Total Categories:</label>
+        <input type="number" id="categoryCount" min="1" max="10" placeholder="Count" style="width:90px; padding:6px 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px;">
+        <span style="font-size:12px; color:#64748b;">(Auto-synced with slots below)</span>
+      </div>
+
+      <!-- CATEGORY CONTAINER -->
+      <div id="categoryContainer" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:14px;"></div>
+    </div>
+
+<!-- FEEDBACK -->
+ <div id="feedbacks">
+  <input type="text" name="feedback1name" placeholder="name">
+  <input type="text" name="feedback1sub" placeholder="email">
+  <textarea name="feedback1message" placeholder="message"></textarea>
+ </div>
+ <!-- FEEDBACK 2 -->
+ <div id="feedbacks">
+  <input type="text" name="feedback2name" placeholder="name">
+  <input type="text" name="feedback2sub" placeholder="email">
+  <textarea name="feedback2message" placeholder="message"></textarea>
+ </div>
+ <!-- FEEDBACK 3 -->
+ <div id="feedbacks">
+  <input type="text" name="feedback3name" placeholder="name">
+  <input type="text" name="feedback3sub" placeholder="email">
+  <textarea name="feedback3message" placeholder="message"></textarea>
+ </div>
+ <!-- FEEDBACK 4 -->
+ <div id="feedbacks">
+  <input type="text" name="feedback4name" placeholder="name">
+  <input type="text" name="feedback4sub" placeholder="email">
+  <textarea name="feedback4message" placeholder="message"></textarea>
+ </div>
+
+    <!-- ================= PAGE 2 ================= -->
+    <h3>PAGE 2</h3>
+    <input type="text" name="page_2" placeholder="Page 2 title">
+    <input type="file" name="page2img1">
+    <input type="text" name="page2img1_headings" placeholder="Heading">
+    <input type="text" name="page2img1_details" placeholder="Details">
+
+    <section class="page2sec1">
+    <div class="page2sec1-title">
+    <input type="text" name="page2sec1_name" placeholder="Section Title">
+    <input type="text" name="page2sec1_subtitle" placeholder="Section Subtitle">
+    </div>
+
+  <div class="about">
+    <div class="image-box">
+      <input type="file" name="page2sec1_file" placeholder="About Image URL">
+    </div>
+
+    <div class="about-content">
+      <input type="text" name="page2sec1_heading" placeholder="About Heading">
+      <textarea name="page2sec1_details" placeholder="About Description"></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MISSION ================= -->
+<section class="page2sec2">
+  <div class="page2sec2-title">
+    <input type="text" name="page2sec2_name" placeholder="Mission Section Title">
+    <input type="text" name="page2sec2_subtitle" placeholder="Mission Section Subtitle">
+  </div>
+
+  <div class="page2sec2-content">
+    <div class="page2sec2-card">
+      <input type="file" name="page2sec2_icon1" placeholder="Card Icon URL">
+      <input type="text" name="page2sec2_heading1" placeholder="Card Title">
+      <textarea name="page2sec2_details1" placeholder="Card Description"></textarea>
+    </div>
+    
+    <div class="page2sec2-card">
+      <input type="file" name="page2sec2_icon2" placeholder="Card Icon URL">
+      <input type="text" name="page2sec2_heading2" placeholder="Card Title">
+      <textarea name="page2sec2_details2" placeholder="Card Description"></textarea>
+    </div>
+
+    <div class="page2sec2-card">
+      <input type="file" name="page2sec2_icon3" placeholder="Card Icon URL">
+      <input type="text" name="page2sec2_heading3" placeholder="Card Title">
+      <textarea name="page2sec2_details3" placeholder="Card Description"></textarea>
+    </div>
+  </div>
+</section>
+
+<div class="admin-container">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <h1>About Page Content</h1>
+      <p>Manage Mission and Vision sections displayed on the About page</p>
+    </div>
+
+    <!-- ================= MISSION ================= -->
+    <div class="content-card">
+
+      <div class="card-title">Mission</div>
+      <div class="card-subtitle">Define your company’s purpose and core objectives</div>
+
+      <div class="input-group">
+        <label>Mission Title</label>
+        <input type="text" name="missiontitle" placeholder="Our Mission" required>
+      </div>
+
+      <div class="input-group">
+        <label>Mission Description</label>
+        <textarea name="missiondescription" placeholder="Brief description about your mission" required></textarea>
+      </div>
+
+      <div class="points-grid">
+        <div class="input-group">
+          <label>Mission Point 1</label>
+          <input type="text" name="mission1" required>
+          <input type="text" name="mission1description" placeholder="Subtitle">
+        </div>
+        <div class="input-group">
+          <label>Mission Point 2</label>
+          <input type="text" name="mission2" required>
+          <input type="text" name="mission2description" placeholder="Subtitle">
+        </div>
+        <div class="input-group">
+          <label>Mission Point 3</label>
+          <input type="text" name="mission3" required>
+          <input type="text" name="mission3description" placeholder="Subtitle">
+        </div>
+        <div class="input-group">
+          <label>Mission Point 4</label>
+          <input type="text" name="mission4" required>
+          <input type="text" name="mission4description" placeholder="Subtitle">
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= VISION ================= -->
+    <div class="content-card">
+
+      <div class="card-title">Vision</div>
+      <div class="card-subtitle">Describe your long-term goals and future direction</div>
+
+      <div class="input-group">
+        <label>Vision Subtitle</label>
+        <input type="text" name="page2vision_subtitle" placeholder="Subtitle">
+      </div>
+
+      <div class="input-group">
+        <label>Vision Title</label>
+        <input type="text" name="visiontitle" placeholder="Our Vision" required>
+      </div>
+
+      <div class="input-group">
+        <label>Vision Description</label>
+        <textarea name="visiondescription" placeholder="Brief description about your vision" required></textarea>
+      </div>
+
+      <div class="points-grid">
+        <div class="input-group">
+          <label>Vision Point 1</label>
+          <input type="text" name="vision1" required>
+          <input type="text" name="vision1description" placeholder="Subtitle">
+        </div>
+        <div class="input-group">
+          <label>Vision Point 2</label>
+          <input type="text" name="vision2" required>
+          <input type="text" name="vision2description" placeholder="Subtitle">
+        </div>
+        <div class="input-group">
+          <label>Vision Point 3</label>
+          <input type="text" name="vision3" required>
+          <input type="text" name="vision3description" placeholder="Subtitle">    
+        </div>
+        <div class="input-group">
+          <label>Vision Point 4</label>
+          <input type="text" name="vision4" required>
+          <input type="text" name="vision4description" placeholder="Subtitle">    
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+<!-- ================= WHY US ================= -->
+<section class="page2sec3">
+  <div class="page2sec3-title">
+    <input type="text" name="page2sec3_name" placeholder="Why Choose Section Title">
+    <input type="text" name="page2sec3_subtitle" placeholder="Why Choose Subtitle">
+  </div>
+
+  <div class="why-us">
+    <ul>
+      <li><input type="text" name="page2sec3_feature1" placeholder="Feature 1"></li>
+      <li><input type="text" name="page2sec3_feature2" placeholder="Feature 2"></li>
+      <li><input type="text" name="page2sec3_feature3" placeholder="Feature 3"></li>
+      <li><input type="text" name="page2sec3_feature4" placeholder="Feature 4"></li>
+      <li><input type="text" name="page2sec3_feature5" placeholder="Feature 5"></li>
+    </ul>
+
+    <div class="image-box">
+      <input type="file" name="page2sec3_file" placeholder="Why Choose Image URL">
+    </div>
+  </div>
+ </section>
+
+    
+    <!-- ================= PAGE 3 ================= -->
+    <h3>PAGE 3</h3>
+    <input type="text" name="page_3" placeholder="Page 3 title">
+    <input type="file" name="page3img1">
+    <input type="text" name="page3img1_headings" placeholder="Heading">
+    <input type="text" name="page3img1_details" placeholder="Details">
+
+    <div class="admin-wrapper">
+
+    <div class="content-layout">
+
+      <!-- IMAGE INPUT -->
+      <div class="image-input">
+        <div class="image-preview-box">
+          Image Upload
+        </div>
+        <input type="file" name="deliveryimg" required>
+      </div>
+
+      <!-- DIVIDER -->
+      <div class="divider"></div>
+
+      <!-- POINTS -->
+      <div class="points-input">
+
+        <div class="point-group">
+          <label>Point 1</label>
+          <input type="text" name="points1" placeholder="Enter point 1" required>
+        </div>
+
+        <div class="point-group">
+          <label>Point 2</label>
+                  <input type="text" name="points2" placeholder="Enter point 2" required>
+        </div>
+
+        <div class="point-group">
+          <label>Point 3</label>
+          <input type="text" name="points3" placeholder="Enter point 3" required>
+        </div>
+
+        <div class="point-group">
+          <label>Point 4</label>
+          <input type="text" name="points4" placeholder="Enter point 4">
+        </div>
+
+        <div class="point-group">
+          <label>Point 5</label>
+          <input type="text" name="points5" placeholder="Enter point 5">
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+   
+    <!-- ================= PAGE 4 ================= -->
+    <h3>PAGE 4</h3>
+    <input type="text" name="page_4" placeholder="Page 4 title">
+    <input type="file" name="page4img1">
+    <input type="text" name="page4img1_headings" placeholder="Heading">
+    <input type="text" name="page4img1_details" placeholder="Details">
+
+    <!-- ================= CONTACT SETTINGS ================= -->
+<section>
+  <div class="section-title">
+    <h2>Contact Page Settings</h2>
+    <p>Manage contact details shown on the website</p>
+  </div>
+
+  <div class="card">
+
+
+      <div class="form-group">
+        <label>Address</label>
+        <input type="text" name="dnumber" placeholder="door number">
+        <input type="text" name="streetname" placeholder="street name">
+        <input type="text" name="city" placeholder="city">
+        <input type="text" name="district" placeholder="district">
+        <input type="text" name="state" placeholder="state">
+        <input type="text" name="zipcode" placeholder="zip code">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Primary Phone</label>
+          <input type="text" name="primaryphone" placeholder="+91 98765 43210">
+        </div>
+
+        <div class="form-group">
+          <label>Secondary Phone</label>
+          <input type="text" name="secondaryphone" placeholder="+91 91234 56789">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Support Email</label>
+          <input type="email" name="supportemail" placeholder="support@example.com">
+        </div>
+      
+      </div>
+      <div class="form-group">
+        <label>Working Hours</label>
+        <input type="text" name="workinghours" placeholder="Mon – Fri | 9:00 AM – 6:00 PM">
+      </div>
+
+  </div>
+</section>
+
+<div class="form-group">
+      <label>Google Map Embed URL</label>
+      <textarea id="mapUrl" name="mapUrl" placeholder="Paste iframe src URL here"></textarea>
+    </div>
+
+    <br><br>
+
+    <div class="container">
+
+  <div class="header">
+    <h1>Footer Content Management</h1>
+    <p>Manage footer layout and dynamic links</p>
+  </div>
+
+  <div class="footer-grid">
+
+    <!-- COLUMN 1 -->
+    <div class="card">
+      <h2>Brand Information</h2>
+
+      <div class="input">
+        <label>Brand Name</label>
+        <input name="footer.brand">
+      </div>
+
+      <div class="input">
+        <label>Tagline</label>
+        <input name="footer.tagline">
+      </div>
+
+      <div class="input">
+        <label>Description</label>
+        <textarea name="footer.description"></textarea>
+      </div>
+
+      <div class="input"><label>Facebook</label><input name="footer.facebook"></div>
+      <div class="input"><label>Instagram</label><input name="footer.instagram"></div>
+      <div class="input"><label>Twitter</label><input name="footer.twitter"></div>
+      <div class="input"><label>YouTube</label><input name="footer.youtube"></div>
+    </div>
+
+    <!-- COLUMN 2 -->
+    <div class="card">
+      <h2>Quick Links</h2>
+      <ul class="list" id="quickLinks"></ul>
+    </div>
+
+    <!-- COLUMN 3 -->
+    <div class="card">
+      <h2>Categories</h2>
+      <ul class="list" id="categoryLinks"></ul>
+    </div>
+
+    <!-- COLUMN 4 -->
+    <div class="card">
+      <h2>Contact Info</h2>
+
+      <div class="input">
+        <label>Address</label>
+        <textarea name="footer.address"></textarea>
+      </div>
+
+      <div class="input">
+        <label>Phone</label>
+        <input name="footer.phone">
+      </div>
+
+      <div class="input">
+        <label>Email</label>
+        <input name="footer.email">
+      </div>
+
+      <div class="input">
+        <label>Store Hours</label>
+        <input name="footer.hours">
+      </div>
+    </div>
+
+  </div>
+
+</div>
+    <div class="submit-wrapper">
+        <input type="submit" value="Save Data">
+    </div>
+
+</form>
+
+<script>
+
+
+async function loadRibbons() {
+    try {
+        const res = await fetch('/api/ribbons');
+        const ribbons = await res.json();
+
+        const selects = [
+            document.getElementById('ribbonSelect1'),
+            document.getElementById('ribbonSelect2')
+        ];
+
+        selects.forEach(select => {
+            select.innerHTML = '<option value="">Select Ribbon</option>';
+
+            ribbons.forEach(ribbon => {
+                const option = document.createElement('option');
+                option.value = ribbon;
+                option.textContent =
+                    ribbon.charAt(0).toUpperCase() + ribbon.slice(1);
+                select.appendChild(option);
+            });
+        });
+
+    } catch (err) {
+        console.error('Ribbon load failed', err);
+    }
+}
+
+loadRibbons();
+
+/* ================= CATEGORY LOGIC ================= */
+let allCategories = [];
+let categorySelects = [];
+
+async function loadCategories() {
+    try {
+        const [catRes, pagesRes] = await Promise.all([
+            fetch('/api/categories').then(r => r.json()).catch(() => []),
+            fetch('/api/pages').then(r => r.json()).catch(() => null)
+        ]);
+        allCategories = (catRes || []).map(c => c.category);
+
+        const currentPinned = pagesRes?.pages?.page1?.categories || [];
+        const initialCount = currentPinned.length > 0 ? currentPinned.length : Math.min(3, allCategories.length || 3);
+
+        const countInput = document.getElementById('categoryCount');
+        if (countInput) countInput.value = initialCount;
+        generateCategoryFields(initialCount, currentPinned);
+    } catch (err) {
+        console.error('Failed to load categories for setup', err);
+    }
+}
+loadCategories();
+
+const categoryCountEl = document.getElementById('categoryCount');
+if (categoryCountEl) {
+    categoryCountEl.addEventListener('input', function() {
+        const count = parseInt(this.value);
+        generateCategoryFields(count);
+    });
+}
+
+const addSlotBtn = document.getElementById('addCategorySlotBtn');
+if (addSlotBtn) {
+    addSlotBtn.addEventListener('click', () => {
+        const countInput = document.getElementById('categoryCount');
+        const currentCount = parseInt(countInput.value) || 0;
+        const nextCount = Math.min(10, currentCount + 1);
+        countInput.value = nextCount;
+        generateCategoryFields(nextCount);
+    });
+}
+
+function generateCategoryFields(count, defaultVals = []) {
+    const container = document.getElementById('categoryContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    categorySelects = [];
+
+    const num = parseInt(count);
+    if (!num || num < 1) return;
+
+    for (let i = 1; i <= num; i++) {
+        const wrapper = document.createElement('div');
+        wrapper.style.background = '#ffffff';
+        wrapper.style.border = '1px solid #e2e8f0';
+        wrapper.style.borderRadius = '8px';
+        wrapper.style.padding = '12px';
+
+        const label = document.createElement('label');
+        label.style.display = 'block';
+        label.style.fontSize = '12px';
+        label.style.fontWeight = '700';
+        label.style.color = '#475569';
+        label.style.marginBottom = '6px';
+        label.style.textTransform = 'uppercase';
+        label.textContent = `Category ${i}`;
+
+        const select = document.createElement('select');
+        select.name = `category${i}`;
+        select.style.width = '100%';
+        select.style.padding = '8px 10px';
+        select.style.border = '1px solid #cbd5e1';
+        select.style.borderRadius = '6px';
+        select.style.fontSize = '14px';
+        select.style.background = '#fff';
+        select.addEventListener('change', () => renderDropdowns());
+
+        wrapper.appendChild(label);
+        wrapper.appendChild(select);
+        container.appendChild(wrapper);
+
+        categorySelects.push(select);
+    }
+
+    renderDropdowns(defaultVals);
+}
+
+function renderDropdowns(defaultVals = []) {
+    const selectedValues = categorySelects.map(sel => sel.value);
+
+    categorySelects.forEach((select, index) => {
+        let currentValue = select.value;
+        if (!currentValue && defaultVals[index]) {
+            currentValue = defaultVals[index];
+        } else if (!currentValue && !selectedValues.some(v => v === allCategories[index]) && allCategories[index]) {
+            currentValue = allCategories[index];
+        }
+
+        select.innerHTML = '<option value="">-- Select Category --</option>';
+
+        allCategories.forEach(cat => {
+            const usedElsewhere = selectedValues.some((v, i) => i !== index && v === cat);
+            if (!usedElsewhere || cat === currentValue) {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+                if (cat === currentValue) option.selected = true;
+                select.appendChild(option);
+            }
+        });
+    });
+}
+
+/* QUICK LINKS */
+fetch('/api/pages')
+.then(res=>res.json())
+.then(data=>{
+  const ul=document.getElementById('quickLinks');
+  if(!data?.pages) return;
+
+  Object.values(data.pages).forEach(p=>{
+    if(p?.title){
+      const li=document.createElement('li');
+      li.textContent=p.title;
+      ul.appendChild(li);
+    }
+  });
+});
+
+/* CATEGORIES */
+fetch('/api/categories')
+.then(res=>res.json())
+.then(data=>{
+  const ul=document.getElementById('categoryLinks');
+  data.slice(0,5).forEach(c=>{
+    const li=document.createElement('li');
+    li.textContent=c.category;
+    ul.appendChild(li);
+  });
+});
+</script>
+
+</body>
+</html>

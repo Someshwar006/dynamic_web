@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account • Orders & Profile</title>
+
+<style>
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --dark: #0f172a;
+  --slate-800: #1e293b;
+  --slate-600: #475569;
+  --slate-500: #64748b;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --white: #ffffff;
+  --emerald: #10b981;
+  --amber: #f59e0b;
+  --rose: #ef4444;
+  --sky: #0ea5e9;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  background: #f8fafc;
+  color: var(--dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TOP NAVBAR */
+.navbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--slate-200);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 24px;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-brand {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--primary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 20px;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  color: var(--slate-600);
+  font-weight: 600;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.nav-menu a:hover {
+  color: var(--primary);
+}
+
+.nav-logout-btn {
+  background: #fee2e2;
+  color: #dc2626 !important;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid #fecaca;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.nav-logout-btn:hover {
+  background: #fecaca;
+}
+
+/* MAIN LAYOUT */
+.main-content {
+  max-width: 1200px;
+  width: 100%;
+  margin: 36px auto;
+  padding: 0 20px;
+  flex: 1;
+}
+
+/* PROFILE HERO */
+.profile-hero {
+  background: linear-gradient(135deg, #1e1b4b, #312e81, #4338ca);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  color: var(--white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  box-shadow: 0 10px 25px rgba(49, 46, 129, 0.25);
+  margin-bottom: 30px;
+}
+
+.hero-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.avatar-circle {
+  width: 72px;
+  height: 72px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.hero-info h1 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.hero-info p {
+  font-size: 14px;
+  color: #c7d2fe;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(16, 185, 129, 0.25);
+  color: #6ee7b7;
+  border: 1px solid rgba(110, 231, 183, 0.4);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.stat-item {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.stat-num {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.stat-lbl {
+  font-size: 12px;
+  color: #c7d2fe;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* TABS */
+.profile-tabs {
+  display: flex;
+  gap: 12px;
+  border-bottom: 2px solid var(--slate-200);
+  margin-bottom: 28px;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--slate-500);
+  padding: 12px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover {
+  color: var(--primary);
+}
+
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* ORDER CARDS */
+.order-card {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.order-header {
+  padding: 18px 24px;
+  background: #f8fafc;
+  border-bottom: 1px solid var(--slate-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.order-meta {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.order-meta-item strong {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--slate-500);
+}
+
+.order-meta-item span {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+/* STATUS BADGES */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-pending {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.status-accepted {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.status-out-for-delivery {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.status-delivered {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.status-cancelled {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+/* STEPPER */
+.stepper {
+  display: flex;
+  padding: 24px;
+  background: var(--white);
+  border-bottom: 1px solid var(--slate-100);
+  justify-content: space-between;
+  position: relative;
+}
+
+.step-item {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.step-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--slate-200);
+  color: var(--slate-500);
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  transition: all 0.3s;
+}
+
+.step-item.completed .step-dot,
+.step-item.active .step-dot {
+  background: var(--primary);
+  color: var(--white);
+  box-shadow: 0 0 0 4px var(--primary-light);
+}
+
+.step-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--slate-500);
+}
+
+.step-item.active .step-label {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.order-body {
+  padding: 24px;
+}
+
+.order-item-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--slate-100);
+}
+
+.order-item-row:last-child {
+  border-bottom: none;
+}
+
+.item-img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--slate-200);
+}
+
+.item-details {
+  flex: 1;
+}
+
+.item-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.item-qty-price {
+  font-size: 13px;
+  color: var(--slate-500);
+  margin-top: 4px;
+}
+
+.order-footer {
+  padding: 16px 24px;
+  background: #f8fafc;
+  border-top: 1px solid var(--slate-100);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--slate-600);
+}
+
+.address-block {
+  max-width: 70%;
+}
+
+/* EMPTY ORDERS */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--slate-200);
+}
+
+.empty-state span {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.empty-state h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.empty-state p {
+  color: var(--slate-500);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--white);
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+/* PROFILE FORM */
+.profile-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--slate-200);
+  padding: 32px;
+  box-shadow: var(--shadow-card);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--slate-600);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 12px;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  outline: none;
+  background: var(--slate-100);
+  transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  background: var(--white);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.form-group input[readonly] {
+  background: #f1f5f9;
+  cursor: not-allowed;
+  color: var(--slate-500);
+}
+
+.form-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #0f172a;
+  color: #fff;
+  padding: 14px 22px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  display: none;
+  z-index: 1000;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .profile-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .stepper {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+  }
+  .step-dot {
+    margin: 0;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/home" class="nav-brand" id="navBrand">🛒 Storefront</a>
+    <ul class="nav-menu">
+      <li><a href="/home">Home</a></li>
+      <li><a href="/services">Catalog & Products</a></li>
+      <li><a href="/contact">Support</a></li>
+      <li id="adminNavBtn" style="display:none;"><a href="/controls" style="background:#0f172a;color:#fff;padding:6px 12px;border-radius:6px;font-size:13px;">⚙️ Admin</a></li>
+      <li><button class="nav-logout-btn" onclick="logout()">🚪 Logout</button></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="main-content">
+
+  <!-- PROFILE HERO -->
+  <div class="profile-hero">
+    <div class="hero-left">
+      <div class="avatar-circle" id="userAvatar">👤</div>
+      <div class="hero-info">
+        <h1 id="heroUsername">Customer Profile</h1>
+        <p id="heroEmail">loading@example.com</p>
+        <span class="hero-badge" id="heroRole">Customer Account</span>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num" id="statTotalOrders">0</div>
+        <div class="stat-lbl">Total Orders</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="statPendingOrders">0</div>
+        <div class="stat-lbl">Pending</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="statDeliveredOrders">0</div>
+        <div class="stat-lbl">Delivered</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="profile-tabs">
+    <button class="tab-btn active" onclick="switchTab('orders')" id="tabBtnOrders">
+      <span>📦</span> My Orders
+    </button>
+    <button class="tab-btn" onclick="switchTab('details')" id="tabBtnDetails">
+      <span>👤</span> Shipping & Profile Details
+    </button>
+  </div>
+
+  <!-- TAB 1: ORDERS -->
+  <div class="tab-content active" id="tabOrders">
+    <div id="ordersContainer">
+      <div class="empty-state">
+        <span>⏳</span>
+        <h3>Loading your orders...</h3>
+        <p>Connecting to live store database...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: PROFILE DETAILS -->
+  <div class="tab-content" id="tabDetails">
+    <div class="profile-card">
+      <h2 style="font-size:20px; font-weight:800; margin-bottom:6px;">Personal & Shipping Details</h2>
+      <p style="color:var(--slate-500); font-size:14px; margin-bottom:24px;">
+        Keep your address and phone number updated for 1-click checkout and seamless order delivery.
+      </p>
+
+      <form id="profileForm" onsubmit="saveProfile(event)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="profUsername" required placeholder="Your full name">
+          </div>
+
+          <div class="form-group">
+            <label>Email Address (Account ID)</label>
+            <input type="email" id="profEmail" readonly>
+          </div>
+
+          <div class="form-group">
+            <label>Mobile Number</label>
+            <input type="tel" id="profPhone" placeholder="10-digit mobile number">
+          </div>
+
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" id="profCity" placeholder="e.g. Mumbai, Chennai, Delhi">
+          </div>
+
+          <div class="form-group full">
+            <label>Delivery Street Address</label>
+            <textarea id="profAddress" rows="2" placeholder="House/Flat No, Apartment, Street/Road, Landmark"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>State / Region</label>
+            <input type="text" id="profState" placeholder="e.g. Tamil Nadu, Maharashtra">
+          </div>
+
+          <div class="form-group">
+            <label>PIN / Postal Code</label>
+            <input type="text" id="profPincode" placeholder="e.g. 600001">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" id="saveProfBtn">Save Profile Details</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">Profile updated successfully!</div>
+
+<script>
+let currentUser = null;
+
+// Initialize Page
+async function initProfile() {
+  try {
+    // 1. Fetch site title
+    fetch('/api/pages').then(r => r.json()).then(p => {
+      if (p.navigation_title) document.getElementById('navBrand').innerText = '🛒 ' + p.navigation_title;
+    }).catch(() => {});
+
+    // 2. Fetch authenticated user profile
+    const authRes = await fetch('/api/auth/me');
+    const authData = await authRes.json();
+
+    if (!authData.loggedIn || !authData.user) {
+      // Check localStorage fallback
+      const local = JSON.parse(localStorage.getItem('currentUser') || 'null');
+      if (!local) {
+        alert('Please login to view your profile and orders.');
+        window.location.href = '/login';
+        return;
+      }
+      currentUser = local;
+    } else {
+      currentUser = authData.user;
+    }
+
+    // Populate Hero
+    document.getElementById('heroUsername').innerText = currentUser.username || 'Customer';
+    document.getElementById('heroEmail').innerText = currentUser.email || '';
+    document.getElementById('userAvatar').innerText = (currentUser.username ? currentUser.username[0].toUpperCase() : '👤');
+
+    if (currentUser.role === 'admin') {
+      document.getElementById('heroRole').innerText = 'Administrator';
+      document.getElementById('heroRole').style.background = 'rgba(239, 68, 68, 0.2)';
+      document.getElementById('heroRole').style.color = '#fca5a5';
+      document.getElementById('adminNavBtn').style.display = 'block';
+    }
+
+    // Populate Form
+    document.getElementById('profUsername').value = currentUser.username || '';
+    document.getElementById('profEmail').value = currentUser.email || '';
+    document.getElementById('profPhone').value = currentUser.phone || '';
+    document.getElementById('profAddress').value = currentUser.address || '';
+    document.getElementById('profCity').value = currentUser.city || '';
+    document.getElementById('profState').value = currentUser.state || '';
+    document.getElementById('profPincode').value = currentUser.pincode || '';
+
+    // Load Orders
+    await loadOrders();
+
+    // Check hash for tab selection
+    if (window.location.hash === '#details') {
+      switchTab('details');
+    } else {
+      switchTab('orders');
+    }
+  } catch (err) {
+    console.error('Failed to init profile', err);
+  }
+}
+
+// Switch Tabs
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+  if (tab === 'orders') {
+    document.getElementById('tabBtnOrders').classList.add('active');
+    document.getElementById('tabOrders').classList.add('active');
+  } else {
+    document.getElementById('tabBtnDetails').classList.add('active');
+    document.getElementById('tabDetails').classList.add('active');
+  }
+}
+
+// Load Orders for this User
+async function loadOrders() {
+  const container = document.getElementById('ordersContainer');
+  try {
+    const res = await fetch('/api/user/orders');
+    const orders = await res.json();
+
+    if (!Array.isArray(orders) || orders.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <span>🛍️</span>
+          <h3>No Orders Yet</h3>
+          <p>You haven't placed any orders yet. Discover trending products with fast delivery!</p>
+          <a href="/services" class="btn-primary">Browse Products & Shop Now →</a>
+        </div>
+      `;
+      document.getElementById('statTotalOrders').innerText = '0';
+      document.getElementById('statPendingOrders').innerText = '0';
+      document.getElementById('statDeliveredOrders').innerText = '0';
+      return;
+    }
+
+    // Update Stats
+    document.getElementById('statTotalOrders').innerText = orders.length;
+    document.getElementById('statPendingOrders').innerText = orders.filter(o => o.status === 'Pending').length;
+    document.getElementById('statDeliveredOrders').innerText = orders.filter(o => o.status === 'Delivered').length;
+
+    // Render Orders
+    container.innerHTML = orders.map(order => renderOrderCard(order)).join('');
+
+  } catch (err) {
+    container.innerHTML = `<div class="empty-state"><p style="color:#ef4444;">Failed to load orders: ${err.message}</p></div>`;
+  }
+}
+
+function renderOrderCard(order) {
+  const dateStr = new Date(order.createdAt).toLocaleDateString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+  });
+
+  const statusClass = {
+    'Pending': 'status-pending',
+    'Accepted': 'status-accepted',
+    'Out for Delivery': 'status-out-for-delivery',
+    'Delivered': 'status-delivered',
+    'Cancelled': 'status-cancelled'
+  }[order.status] || 'status-pending';
+
+  const statusIcon = {
+    'Pending': '⏳',
+    'Accepted': '✅',
+    'Out for Delivery': '🚚',
+    'Delivered': '🎉',
+    'Cancelled': '❌'
+  }[order.status] || '⏳';
+
+  // Stepper state
+  const step1 = 'completed';
+  const step2 = (order.status === 'Accepted' || order.status === 'Out for Delivery' || order.status === 'Delivered') ? 'completed' : (order.status === 'Pending' ? 'active' : '');
+  const step3 = (order.status === 'Out for Delivery' || order.status === 'Delivered') ? 'completed' : (order.status === 'Accepted' ? 'active' : '');
+  const step4 = (order.status === 'Delivered') ? 'completed' : (order.status === 'Out for Delivery' ? 'active' : '');
+
+  return `
+    <div class="order-card">
+      <div class="order-header">
+        <div class="order-meta">
+          <div class="order-meta-item">
+            <strong>Order Placed</strong>
+            <span>${dateStr}</span>
+          </div>
+          <div class="order-meta-item">
+            <strong>Order ID</strong>
+            <span style="font-family:monospace; color:var(--primary); font-size:15px;">#${order.orderId}</span>
+          </div>
+          <div class="order-meta-item">
+            <strong>Total Amount</strong>
+            <span style="color:#0f172a;">₹${order.totalAmount} (${order.paymentMethod || 'COD'})</span>
+          </div>
+        </div>
+        <div class="status-badge ${statusClass}">
+          <span>${statusIcon}</span> ${order.status}
+        </div>
+      </div>
+
+      <!-- VISUAL TRACKING STEPPER -->
+      ${order.status !== 'Cancelled' ? `
+      <div class="stepper">
+        <div class="step-item ${step1}">
+          <div class="step-dot">1</div>
+          <div class="step-label">Order Placed</div>
+        </div>
+        <div class="step-item ${step2}">
+          <div class="step-dot">2</div>
+          <div class="step-label">Seller Accepted</div>
+        </div>
+        <div class="step-item ${step3}">
+          <div class="step-dot">3</div>
+          <div class="step-label">Out for Delivery</div>
+        </div>
+        <div class="step-item ${step4}">
+          <div class="step-dot">4</div>
+          <div class="step-label">Delivered</div>
+        </div>
+      </div>
+      ` : ''}
+
+      <div class="order-body">
+        ${order.items.map(item => `
+          <div class="order-item-row">
+            <img class="item-img" src="/uploads/${item.image}" onerror="this.src='https://via.placeholder.com/80?text=Product'" alt="${item.name}">
+            <div class="item-details">
+              <div class="item-name">${item.name}</div>
+              <div class="item-qty-price">Quantity: <strong>${item.quantity || 1}</strong> • Price: <strong>₹${item.price}</strong></div>
+            </div>
+            <div style="font-weight:700; font-size:15px; color:var(--dark);">
+              ₹${(item.price * (item.quantity || 1))}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="order-footer">
+        <div class="address-block">
+          📍 <strong>Shipping Address:</strong> 
+          ${order.shippingAddress?.address ? `${order.shippingAddress.address}, ${order.shippingAddress.city || ''} ${order.shippingAddress.state || ''} - ${order.shippingAddress.pincode || ''}` : 'Address not specified'}
+          ${order.phone ? ` • 📞 ${order.phone}` : ''}
+        </div>
+        <div style="font-weight:600; color:var(--primary);">
+          ${order.status === 'Delivered' ? '✅ Package Delivered' : '🚚 In Transit'}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Save Profile
+async function saveProfile(e) {
+  e.preventDefault();
+  const btn = document.getElementById('saveProfBtn');
+  btn.disabled = true;
+  btn.innerText = 'Saving...';
+
+  const body = {
+    username: document.getElementById('profUsername').value,
+    phone: document.getElementById('profPhone').value,
+    address: document.getElementById('profAddress').value,
+    city: document.getElementById('profCity').value,
+    state: document.getElementById('profState').value,
+    pincode: document.getElementById('profPincode').value
+  };
+
+  try {
+    const res = await fetch('/api/user/profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (data.success) {
+      // Update local storage
+      if (currentUser) {
+        currentUser.username = body.username;
+        currentUser.phone = body.phone;
+        currentUser.address = body.address;
+        currentUser.city = body.city;
+        currentUser.state = body.state;
+        currentUser.pincode = body.pincode;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      }
+      document.getElementById('heroUsername').innerText = body.username;
+      showToast('Profile updated successfully! ✅');
+    } else {
+      alert(data.error || 'Failed to update profile');
+    }
+  } catch (err) {
+    alert('Error saving profile: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerText = 'Save Profile Details';
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerText = msg;
+  t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 3000);
+}
+
+// Logout
+async function logout() {
+  if (!confirm('Are you sure you want to log out?')) return;
+  try {
+    await fetch('/api/auth/logout', { method: 'POST' });
+  } catch (e) {}
+  localStorage.removeItem('currentUser');
+  window.location.href = '/login';
+}
+
+initProfile();
+</script>
+
+</body>
+</html>
+

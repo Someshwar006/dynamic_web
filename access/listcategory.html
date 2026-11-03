@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Manage Categories • Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --dark: #0f172a;
+  --slate-700: #334155;
+  --slate-500: #64748b;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --white: #ffffff;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-hover: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  background: #f8fafc;
+  color: var(--dark);
+  padding: 40px 24px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* TOP HEADER */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.header-left h1 {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--dark);
+}
+
+.header-left p {
+  color: var(--slate-500);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--slate-700);
+  border: 1px solid var(--slate-200);
+}
+
+.btn-secondary:hover {
+  background: var(--slate-100);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.category-manager-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.manage-card {
+  background: var(--white);
+  padding: 24px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--slate-200);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+
+.manage-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: #cbd5e1;
+}
+
+.manage-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--slate-100);
+}
+
+.manage-img {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  object-fit: contain;
+  background: #f1f5f9;
+  border: 1px solid var(--slate-200);
+  padding: 4px;
+}
+
+.manage-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  flex: 1;
+  color: var(--dark);
+}
+
+.header-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-sm {
+  padding: 7px 12px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-sm:hover {
+  background: var(--primary-hover);
+}
+
+.btn-outline {
+  background: var(--white);
+  color: var(--slate-700);
+  border: 1px solid var(--slate-200);
+}
+
+.btn-outline:hover {
+  background: var(--slate-100);
+}
+
+.btn-danger {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.btn-danger:hover {
+  background: #fca5a5;
+  color: #b91c1c;
+}
+
+.sub-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+  min-height: 38px;
+}
+
+.sub-tag {
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(79, 70, 229, 0.15);
+}
+
+.sub-tag button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 2px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.sub-tag button:hover {
+  opacity: 1;
+}
+
+.add-sub-form {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.add-sub-input {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1px solid var(--slate-200);
+  border-radius: 6px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.add-sub-input:focus {
+  border-color: var(--primary);
+}
+
+/* ===== POPUP MODAL ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-box {
+  background: var(--white);
+  width: 100%;
+  max-width: 420px;
+  border-radius: var(--radius-md);
+  padding: 26px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+}
+
+.modal-box h3 {
+  margin-bottom: 16px;
+  font-size: 18px;
+  color: var(--dark);
+}
+
+.preview-img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--slate-200);
+  background: #f8fafc;
+  margin-bottom: 12px;
+}
+
+.modal-box input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="top-header">
+    <div class="header-left">
+      <h1>Category Management</h1>
+      <p>Organize store taxonomy, update thumbnails, and configure subcategory filters</p>
+    </div>
+    <div class="header-actions">
+      <a href="/controls" class="nav-btn btn-secondary">← Back to Dashboard</a>
+      <a href="/category" class="nav-btn btn-primary">+ Add New Category</a>
+    </div>
+  </div>
+
+  <div id="category-manager-grid" class="category-manager-grid"></div>
+</div>
+
+<!-- ===== EDIT POPUP ===== -->
+<div class="modal" id="editModal">
+  <div class="modal-box">
+    <h3>Edit Category</h3>
+
+    <img id="editPreview" class="preview-img">
+    <input type="file" id="editImage">
+
+    <input type="text" id="editName" placeholder="Category name">
+
+    <div class="modal-actions">
+      <button class="btn-sm btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-sm" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let editId = null;
+let oldImage = '';
+
+/* LOAD */
+async function loadManageCategories(){
+  const res = await fetch('/api/categories');
+  const categories = await res.json();
+  const container = document.getElementById('category-manager-grid');
+  container.innerHTML = '';
+
+  if (!categories.length) {
+    container.innerHTML = '<div style="text-align:center; grid-column:1/-1; padding:40px; color:#64748b;">No categories created yet. Click "+ Add New Category" to create your first category.</div>';
+    return;
+  }
+
+  categories.forEach(cat=>{
+    const img = cat.categoryImage
+      ? `/uploads/${cat.categoryImage.split(/[\\/]/).pop()}`
+      : 'https://via.placeholder.com/60';
+
+    const subs = cat.subCategories ? cat.subCategories.map(sub=>`
+      <span class="sub-tag">
+        ${sub}
+        <button onclick="editSubCategory('${cat._id}','${sub}')" title="Edit">✏️</button>
+        <button onclick="deleteSubCategory('${cat._id}','${sub}')" title="Delete">✕</button>
+      </span>
+    `).join('') : '';
+
+    container.innerHTML += `
+      <div class="manage-card">
+        <div class="manage-header">
+          <img src="${img}" class="manage-img" alt="${cat.category}">
+          <div class="manage-title">${cat.category}</div>
+          <div class="header-card-actions">
+            <button class="btn-sm btn-outline"
+              onclick="openEdit('${cat._id}','${cat.category}','${img}')">Edit</button>
+            <button class="btn-sm btn-danger"
+              onclick="deleteCategory('${cat._id}')">Delete</button>
+          </div>
+        </div>
+
+        <div class="sub-list">${subs || '<span style="font-size:12px;color:#94a3b8;">No subcategories added</span>'}</div>
+
+        <div class="add-sub-form">
+          <input class="add-sub-input" id="sub-${cat._id}" placeholder="New Subcategory name">
+          <button class="btn-sm" onclick="addSubCategory('${cat._id}')">+ Add</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+/* ===== POPUP ===== */
+function openEdit(id,name,img){
+  editId = id;
+  oldImage = img;
+  document.getElementById('editName').value = name;
+  document.getElementById('editPreview').src = img;
+  document.getElementById('editImage').value = '';
+  document.getElementById('editModal').style.display = 'flex';
+}
+
+function closeModal(){
+  document.getElementById('editModal').style.display = 'none';
+}
+
+/* LIVE IMAGE PREVIEW */
+document.getElementById('editImage').addEventListener('change',e=>{
+  const file = e.target.files[0];
+  if(file){
+    document.getElementById('editPreview').src = URL.createObjectURL(file);
+  }
+});
+
+/* SAVE */
+async function saveEdit(){
+  const name = document.getElementById('editName').value.trim();
+  const image = document.getElementById('editImage').files[0];
+
+  if(name){
+    await fetch('/api/edit-category',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({categoryId:editId,newName:name})
+    });
+  }
+
+  if(image){
+    const fd = new FormData();
+    fd.append('categoryId',editId);
+    fd.append('image',image);
+    await fetch('/api/edit-category-image',{method:'POST',body:fd});
+  }
+
+  closeModal();
+  loadManageCategories();
+}
+
+/* EXISTING FUNCTIONS */
+async function addSubCategory(id){
+  const val=document.getElementById(`sub-${id}`).value.trim();
+  if(!val) return;
+  await fetch('/api/add-subcategory',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({categoryId:id,subCategory:val})
+  });
+  loadManageCategories();
+}
+
+async function deleteCategory(id){
+  if(!confirm('Delete this category permanently?')) return;
+  await fetch('/api/delete-category',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({categoryId:id})
+  });
+  loadManageCategories();
+}
+
+async function editSubCategory(id,old){
+  const name=prompt('Edit subcategory name:',old);
+  if(!name) return;
+  await fetch('/api/edit-subcategory',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({categoryId:id,oldSubCategory:old,newSubCategory:name})
+  });
+  loadManageCategories();
+}
+
+async function deleteSubCategory(id,sub){
+  if(!confirm('Delete this subcategory?')) return;
+  await fetch('/api/delete-subcategory',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({categoryId:id,subCategory:sub})
+  });
+  loadManageCategories();
+}
+
+window.onload = loadManageCategories;
+</script>
+
+</body>
+</html>

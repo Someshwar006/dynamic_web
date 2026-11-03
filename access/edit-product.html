@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Product • Admin</title>
+
+<style>
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --dark: #0f172a;
+  --slate-700: #334155;
+  --slate-500: #64748b;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --white: #ffffff;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef2f7, #dbe3ef);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  color: var(--dark);
+}
+
+.card {
+  width: 100%;
+  max-width: 650px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--slate-200);
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--primary-light);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #e0e7ff;
+  transform: translateX(-2px);
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 16px 0 6px;
+  color: var(--slate-700);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--slate-200);
+  font-size: 14px;
+  color: var(--dark);
+  background: var(--white);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+textarea {
+  font-family: inherit;
+  resize: vertical;
+  min-height: 90px;
+  line-height: 1.5;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.preview-box {
+  height: 220px;
+  border: 2px dashed #cbd5e1;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  background: var(--slate-100);
+  overflow: hidden;
+}
+
+.preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+input[type="file"] {
+  padding: 10px;
+  background: var(--slate-100);
+  border: 1px solid var(--slate-200);
+  cursor: pointer;
+}
+
+.field-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.field-group select {
+  flex: 1;
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.add {
+  background: var(--primary);
+  color: var(--white);
+  padding: 8px 16px;
+  width: auto;
+  font-weight: 600;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.add:hover {
+  background: var(--primary-hover);
+}
+
+.remove {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.remove:hover {
+  background: #fecaca;
+}
+
+.price-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.radio-group label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  margin: 0;
+  cursor: pointer;
+}
+
+.radio-group input {
+  width: auto;
+  cursor: pointer;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+  transition: all 0.25s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+    <div class="top-bar">
+        <a href="/listproduct" class="back-btn">← Back to Products</a>
+        <span style="font-size: 12px; color: var(--slate-500);">Product Editor</span>
+    </div>
+
+    <h1>Edit Product</h1>
+
+    <form id="editForm" method="POST" enctype="multipart/form-data">
+
+        <!-- IMAGE -->
+        <label>Current / New Image</label>
+        <div class="preview-box">
+            <img id="previewImage">
+        </div>
+        <input type="file" id="imageInput" name="image">
+
+        <!-- NAME -->
+        <label>Product Name</label>
+        <input type="text" name="name" required placeholder="Enter product name">
+
+        <!-- RIBBON -->
+        <label>Ribbon Badge</label>
+        <select name="ribbon" id="ribbonSelect">
+            <option value="">Select Ribbon</option>
+        </select>
+
+        <!-- CATEGORY -->
+        <label>Categories</label>
+        <div id="categoryContainer"></div>
+        <button type="button" class="icon-btn add" onclick="addCategory()">+ Add Category</button>
+
+        <!-- SUB CATEGORY -->
+        <label>Sub Categories</label>
+        <div id="subCategoryContainer"></div>
+        <button type="button" class="icon-btn add" onclick="addSubCategory()">+ Add Sub Category</button>
+
+        <!-- DESCRIPTION -->
+        <label>Description</label>
+        <textarea name="description" required placeholder="Enter product description"></textarea>
+
+        <!-- PRICE -->
+        <div class="price-grid">
+            <div>
+                <label>Price (₹)</label>
+                <input type="number" name="price" id="priceInput" required>
+            </div>
+            <div>
+                <label>Old Price (₹)</label>
+                <input type="number" name="oldPrice" id="oldPriceInput" required>
+            </div>
+            <div>
+                <label>Discount (%)</label>
+                <input type="number" name="discount" id="discountInput" readonly style="background:#f8fafc; color:#10b981; font-weight:700;">
+            </div>
+        </div>
+
+        <!-- DELIVERY -->
+        <label>Delivery Info</label>
+        <input type="text" name="delivery" required placeholder="e.g. Free delivery • 2-3 days">
+
+        <label>Delivery Charges (Optional)</label>
+        <input type="text" name="deliveryCharge" placeholder="Enter delivery charges">
+
+        <!-- STOCK -->
+        <label>Stock Status</label>
+        <div class="radio-group">
+            <label><input type="radio" name="stock" value="in"> In Stock</label>
+            <label><input type="radio" name="stock" value="out"> Out of Stock</label>
+        </div>
+
+        <button class="submit-btn" type="submit">Update Product</button>
+    </form>
+</div>
+
+<script>
+const productId = new URLSearchParams(location.search).get('id');
+
+let categoriesData = [];
+let productData = null;
+
+/* ===== LOAD INITIAL DATA ===== */
+async function init(){
+    await loadCategories();
+    await loadRibbons();
+    await loadProduct();
+}
+
+/* ===== LOAD PRODUCT ===== */
+async function loadProduct(){
+    const res = await fetch('/api/product/' + productId);
+    productData = await res.json();
+
+    document.getElementById('editForm').action =
+        '/api/product/update/' + productId;
+
+    previewImage.src = '/uploads/' + productData.image;
+
+    editForm.name.value = productData.name;
+    editForm.description.value = productData.description;
+    editForm.price.value = productData.price;
+    editForm.oldPrice.value = productData.oldPrice;
+    editForm.discount.value = productData.discount;
+    editForm.delivery.value = productData.delivery;
+    editForm.deliveryCharge.value = productData.deliveryCharge || '';
+    document.querySelectorAll('input[name="stock"]').forEach(inp=>{
+        inp.checked = (inp.value === (productData.stock || 'in'));
+    });
+
+    // ribbon
+    ribbonSelect.value = productData.ribbon || '';
+
+    // categories
+    productData.category.forEach(c => addCategory(c));
+    productData.subCategory.forEach(s => addSubCategory(s));
+
+    updateSubCategories();
+}
+
+/* ===== LOAD CATEGORIES ===== */
+async function loadCategories(){
+    const res = await fetch('/api/categories');
+    categoriesData = await res.json();
+}
+
+/* ===== LOAD RIBBONS ===== */
+async function loadRibbons(){
+    const res = await fetch('/api/ribbons');
+    const ribbons = await res.json();
+    ribbons.forEach(r=>{
+        const opt = document.createElement('option');
+        opt.value = r;
+        opt.textContent = r;
+        ribbonSelect.appendChild(opt);
+    });
+}
+
+/* ===== CATEGORY ===== */
+function addCategory(value=''){
+    const group = document.createElement('div');
+    group.className='field-group';
+
+    const select = document.createElement('select');
+    select.name='category[]';
+    select.onchange=updateSubCategories;
+
+    select.innerHTML='<option value="">Select Category</option>';
+    categoriesData.forEach(c=>{
+        const opt=document.createElement('option');
+        opt.value=c.category;
+        opt.textContent=c.category;
+        if(c.category===value) opt.selected=true;
+        select.appendChild(opt);
+    });
+
+    const remove=document.createElement('button');
+    remove.type='button';
+    remove.className='icon-btn remove';
+    remove.textContent='✕';
+    remove.onclick=()=>{group.remove();updateSubCategories();};
+
+    group.append(select,remove);
+    categoryContainer.appendChild(group);
+}
+
+/* ===== SUB CATEGORY ===== */
+function addSubCategory(value=''){
+    const group=document.createElement('div');
+    group.className='field-group';
+
+    const select=document.createElement('select');
+    select.name='subCategory[]';
+
+    const remove=document.createElement('button');
+    remove.type='button';
+    remove.className='icon-btn remove';
+    remove.textContent='✕';
+    remove.onclick=()=>group.remove();
+
+    group.append(select,remove);
+    subCategoryContainer.appendChild(group);
+
+    updateSubCategories(value);
+}
+
+/* ===== UPDATE SUB CATEGORIES ===== */
+function updateSubCategories(selected=''){
+    const selectedCats=[...document.querySelectorAll('select[name="category[]"]')]
+        .map(s=>s.value).filter(Boolean);
+
+    let subs=[];
+    categoriesData.forEach(c=>{
+        if(selectedCats.includes(c.category)){
+            subs=subs.concat(c.subCategories || []);
+        }
+    });
+    subs=[...new Set(subs)];
+
+    document.querySelectorAll('select[name="subCategory[]"]').forEach(select=>{
+        const prev=select.value;
+        select.innerHTML='<option value="">Select Sub Category</option>';
+        subs.forEach(s=>{
+            const opt=document.createElement('option');
+            opt.value=s;
+            opt.textContent=s;
+            if(s===prev || s===selected) opt.selected=true;
+            select.appendChild(opt);
+        });
+    });
+}
+
+/* ===== DISCOUNT ===== */
+function calcDiscount(){
+    const p=+priceInput.value;
+    const o=+oldPriceInput.value;
+    discountInput.value = (o>p) ? Math.round(((o-p)/o)*100) : 0;
+}
+priceInput.oninput=calcDiscount;
+oldPriceInput.oninput=calcDiscount;
+
+/* ===== IMAGE PREVIEW ===== */
+imageInput.onchange=()=>{
+    const f=imageInput.files[0];
+    if(f) previewImage.src=URL.createObjectURL(f);
+};
+
+init();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,278 @@
+/* ==========================================================================
+   DYNAMIC CMS ADMIN - MODERN DASHBOARD FORM SYSTEM
+   ========================================================================== */
+
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --primary-ring: rgba(79, 70, 229, 0.2);
+  --success: #10b981;
+  --danger: #ef4444;
+  --dark: #0f172a;
+  --slate-800: #1e293b;
+  --slate-600: #475569;
+  --slate-400: #94a3b8;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --slate-50: #f8fafc;
+  --white: #ffffff;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+  background: #f8fafc;
+  color: var(--dark);
+  line-height: 1.6;
+  padding: 30px 20px 80px;
+}
+
+/* =========================
+   FORM CONTAINER
+   ========================= */
+form {
+  max-width: 1140px;
+  margin: 0 auto;
+  background: var(--white);
+  padding: 48px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--slate-200);
+}
+
+/* Back Link / Top Header */
+.form-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 16px;
+  background: var(--primary-light);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.back-link:hover {
+  background: #e0e7ff;
+  transform: translateX(-3px);
+}
+
+/* Page Section Titles */
+h1, h2, h3 {
+  color: var(--dark);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+h3 {
+  font-size: 20px;
+  margin: 45px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--primary-light);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+h3::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 22px;
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+/* =========================
+   CARDS & SECTIONS
+   ========================= */
+.section-box,
+div[id^="page"],
+.content-card,
+.feature-input-card,
+.page2sec1,
+.page2sec2,
+.admin-container {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 24px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.section-box:hover,
+div[id^="page"]:hover,
+.content-card:hover,
+.feature-input-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Grids for organized layout */
+.feature-form-grid,
+.points-grid,
+.page2sec2-content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.about {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* =========================
+   INPUT LABELS & FIELDS
+   ========================= */
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--slate-600);
+  margin: 14px 0 6px;
+  text-transform: capitalize;
+}
+
+.input-group {
+  margin-bottom: 16px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--dark);
+  transition: all 0.2s ease;
+  outline: none;
+  margin-bottom: 8px;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-ring);
+  background: var(--white);
+}
+
+/* Modern Styled File Inputs */
+input[type="file"] {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--white);
+  border: 1px dashed var(--slate-400);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--slate-600);
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: border-color 0.2s ease;
+}
+
+input[type="file"]:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+/* Feedbacks container */
+#feedbacks,
+div[id="feedbacks"] {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  margin-bottom: 16px;
+}
+
+/* =========================
+   SUBMIT BUTTON (STICKY)
+   ========================= */
+.submit-wrapper {
+  margin-top: 40px;
+  padding-top: 25px;
+  border-top: 1px solid var(--slate-200);
+  display: flex;
+  justify-content: flex-end;
+}
+
+input[type="submit"],
+button[type="submit"] {
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: var(--white);
+  padding: 15px 40px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+  transition: all 0.25s ease;
+}
+
+input[type="submit"]:hover,
+button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.45);
+}
+
+input[type="submit"]:active,
+button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+   ========================= */
+@media (max-width: 900px) {
+  form {
+    padding: 30px 20px;
+  }
+  .feature-form-grid,
+  .points-grid,
+  .page2sec2-content,
+  .about {
+    grid-template-columns: 1fr;
+  }
+}

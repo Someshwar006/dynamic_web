@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Upload • Admin</title>
+
+<style>
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --dark: #0f172a;
+  --slate-700: #334155;
+  --slate-500: #64748b;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --white: #ffffff;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef2f7, #dbe3ef);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: var(--dark);
+}
+
+.card {
+  width: 100%;
+  max-width: 640px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--slate-200);
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--primary-light);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #e0e7ff;
+  transform: translateX(-2px);
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 16px 0 6px;
+  color: var(--slate-700);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--slate-200);
+  font-size: 14px;
+  color: var(--dark);
+  background: var(--white);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+textarea {
+  font-family: inherit;
+  resize: vertical;
+  min-height: 90px;
+  line-height: 1.5;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.preview-box {
+  height: 200px;
+  border: 2px dashed #cbd5e1;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  background: var(--slate-100);
+  overflow: hidden;
+}
+
+.preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: none;
+}
+
+.preview-text {
+  color: var(--slate-500);
+  font-size: 14px;
+}
+
+input[type="file"] {
+  padding: 10px;
+  background: var(--slate-100);
+  border: 1px solid var(--slate-200);
+  cursor: pointer;
+}
+
+.field-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.field-group select {
+  flex: 1;
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.add {
+  background: var(--primary);
+  color: var(--white);
+  padding: 8px 16px;
+  width: auto;
+  font-weight: 600;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.add:hover {
+  background: var(--primary-hover);
+}
+
+.remove {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.remove:hover {
+  background: #fecaca;
+}
+
+.price-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.radio-group label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  margin: 0;
+  cursor: pointer;
+}
+
+.radio-group input {
+  width: auto;
+  cursor: pointer;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+  transition: all 0.25s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+    <div class="top-bar">
+        <a href="/controls" class="back-btn">← Back to Dashboard</a>
+        <span style="font-size: 12px; color: var(--slate-500);">Inventory Manager</span>
+    </div>
+
+    <h1>Product Upload</h1>
+
+    <form action="/add-product" method="POST" enctype="multipart/form-data">
+
+        <!-- PRODUCT NAME -->
+        <label>Product Name</label>
+        <input type="text" name="name" placeholder="Enter product name" required>
+
+        <!-- IMAGE -->
+        <label>Product Image</label>
+        <div class="preview-box">
+            <span class="preview-text">Image Preview</span>
+            <img id="previewImage">
+        </div>
+        <input type="file" id="imageInput" name="image" required>
+
+        <!-- RIBBON -->
+        <label>Ribbon Badge (e.g. New, Trending, Sale)</label>
+        <select name="ribbon" id="ribbonSelect">
+            <option value="">Select Ribbon</option>
+        </select>
+
+        <!-- CATEGORY -->
+        <label>Categories</label>
+        <div id="categoryContainer"></div>
+        <button type="button" class="icon-btn add" onclick="addCategory()">+ Add Category</button>
+
+        <!-- SUB CATEGORY -->
+        <label>Sub Categories</label>
+        <div id="subCategoryContainer"></div>
+        <button type="button" class="icon-btn add" onclick="addSubCategory()">+ Add Sub Category</button>
+
+        <label>Product Description</label>
+        <textarea name="description" placeholder="Enter detailed product description" required></textarea>
+
+        <!-- PRICING -->
+        <div class="price-grid">
+            <div>
+                <label>Price (₹)</label>
+                <input type="number" name="price" id="priceInput" required placeholder="0">
+            </div>
+            <div>
+                <label>Old Price (₹)</label>
+                <input type="number" name="oldPrice" id="oldPriceInput" required placeholder="0">
+            </div>
+            <div>
+                <label>Discount (%)</label>
+                <input type="number" name="discount" id="discountInput" value="0" readonly style="background:#f8fafc; color:#10b981; font-weight:700;">
+            </div>
+        </div>
+
+        <!-- DELIVERY -->
+        <label>Delivery Info</label>
+        <input type="text" name="delivery" placeholder="e.g. Free delivery • 2-3 days" required>
+
+        <label>Delivery Charges (Optional)</label>
+        <input type="text" name="deliveryCharge" placeholder="0 or Free">
+
+        <!-- STOCK -->
+        <label>Stock Status</label>
+        <div class="radio-group">
+            <label><input type="radio" name="stock" value="in" checked> In Stock</label>
+            <label><input type="radio" name="stock" value="out"> Out of Stock</label>
+        </div>
+
+        <button class="submit-btn" type="submit">Submit Product</button>
+
+    </form>
+</div>
+
+<script>
+let categoriesData = [];
+
+/* LOAD CATEGORIES */
+async function loadCategories(){
+    const res = await fetch('/api/categories');
+    categoriesData = await res.json();
+    addCategory();
+    addSubCategory();
+}
+
+/* LOAD RIBBONS */
+async function loadRibbons(){
+    try {
+        const res = await fetch('/api/ribbons');
+        const ribbons = await res.json();
+        const select = document.getElementById('ribbonSelect');
+        ribbons.forEach(r => {
+            const opt = document.createElement('option');
+            opt.value = r;
+            opt.textContent = r;
+            select.appendChild(opt);
+        });
+    } catch(err) {
+        console.error('Failed to load ribbons', err);
+    }
+}
+
+loadCategories();
+loadRibbons();
+
+/* DISCOUNT CALCULATION */
+const priceInput = document.getElementById('priceInput');
+const oldPriceInput = document.getElementById('oldPriceInput');
+const discountInput = document.getElementById('discountInput');
+
+function calculateDiscount() {
+    const price = parseFloat(priceInput.value);
+    const oldPrice = parseFloat(oldPriceInput.value);
+
+    if (price && oldPrice && oldPrice > price) {
+        const discount = ((oldPrice - price) / oldPrice) * 100;
+        discountInput.value = Math.round(discount);
+    } else {
+        discountInput.value = 0;
+    }
+}
+
+priceInput.addEventListener('input', calculateDiscount);
+oldPriceInput.addEventListener('input', calculateDiscount);
+
+/* CATEGORY */
+function addCategory(){
+    const container = document.getElementById('categoryContainer');
+
+    const group = document.createElement('div');
+    group.className = 'field-group';
+
+    const select = document.createElement('select');
+    select.name = 'category[]';
+    select.onchange = updateSubCategories;
+
+    select.innerHTML = '<option value="">Select Category</option>';
+    categoriesData.forEach(c=>{
+        const opt = document.createElement('option');
+        opt.value = c.category;
+        opt.textContent = c.category;
+        select.appendChild(opt);
+    });
+
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'icon-btn remove';
+    remove.textContent = '✕';
+    remove.onclick = ()=>{
+        group.remove();
+        updateSubCategories();
+    };
+
+    group.append(select, remove);
+    container.appendChild(group);
+}
+
+/* SUB CATEGORY */
+function addSubCategory(){
+    const container = document.getElementById('subCategoryContainer');
+
+    const group = document.createElement('div');
+    group.className = 'field-group';
+
+    const select = document.createElement('select');
+    select.name = 'subcategory[]';
+
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'icon-btn remove';
+    remove.textContent = '✕';
+    remove.onclick = ()=> group.remove();
+
+    group.append(select, remove);
+    container.appendChild(group);
+
+    updateSubCategories();
+}
+
+/* CORE FIXED LOGIC */
+function updateSubCategories(){
+    const selectedCategories = [...document.querySelectorAll('select[name="category[]"]')]
+        .map(s => s.value)
+        .filter(Boolean);
+
+    let allSubCategories = [];
+
+    categoriesData.forEach(cat => {
+        if (selectedCategories.includes(cat.category)) {
+            if (cat.subCategories && Array.isArray(cat.subCategories)) {
+                allSubCategories = allSubCategories.concat(cat.subCategories);
+            }
+        }
+    });
+
+    allSubCategories = [...new Set(allSubCategories)];
+
+    document.querySelectorAll('select[name="subcategory[]"]').forEach(select=>{
+        const prev = select.value;
+        select.innerHTML = '<option value="">Select Sub Category</option>';
+
+        allSubCategories.forEach(sub=>{
+            const opt = document.createElement('option');
+            opt.value = sub;
+            opt.textContent = sub;
+            if(sub === prev) opt.selected = true;
+            select.appendChild(opt);
+        });
+    });
+}
+
+/* IMAGE PREVIEW */
+imageInput.addEventListener('change',()=>{
+    const file = imageInput.files[0];
+    if(file){
+        previewImage.src = URL.createObjectURL(file);
+        previewImage.style.display='block';
+        document.querySelector('.preview-text').style.display='none';
+    }
+});
+</script>
+
+</body>
+</html>

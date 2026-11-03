@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ================= GLOBAL ================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+  background:#f4f6f8;
+  color:#222;
+  overflow-x:hidden;
+}
+
+/* ================= NAV (UNCHANGED) ================= */ 
+nav{ 
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+  padding:15px 30px; 
+  background:#111; 
+  color:#fff; 
+} 
+
+nav h2{font-size:22px} 
+nav ul{list-style:none; display:flex; gap:25px} 
+nav ul li a{color:#fff; text-decoration:none; transition:.3s} 
+nav ul li a:hover{color:#1abc9c} 
+.menu{display:none; font-size:26px; cursor:pointer}
+
+/* ================= HEADER / SLIDER (UNCHANGED) ================= */ 
+header{position:relative; height:85vh; overflow:hidden}
+header::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to right, rgba(0,0,0,.75), rgba(0,0,0,.25));
+  z-index:1;
+}
+.slide{position:absolute; inset:0; opacity:0; transition:opacity 1.2s ease}
+.slide.active{opacity:1}
+.slide img{width:100%; height:100%; object-fit:cover}
+.hero-content{
+  position:absolute;
+  top:50%;
+  left:10%;
+  transform:translateY(-50%);
+  max-width:520px;
+  color:#fff;
+  z-index:2;
+}
+.hero-inner{opacity:0; transform:translateY(30px)}
+.slide.active .hero-inner{animation:fadeUp 1.1s ease forwards}
+.hero-inner h1{font-size:48px; margin-bottom:15px}
+.hero-inner p{font-size:16px; line-height:1.7}
+.hero-inner button{
+  margin-top:22px;
+  padding:13px 32px;
+  border:none;
+  border-radius:30px;
+  background:#1abc9c;
+  color:#fff;
+  cursor:pointer;
+  transition:.3s;
+}
+.hero-inner button:hover{background:#159a7c}
+
+/* ================= ABOUT SECTION ================= */
+.section-wrapper{
+  padding:70px 20px;
+  background:#fff;
+}
+
+.section-cards{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  flex-direction:column;
+  gap:60px;
+}
+
+.card{
+  display:flex;
+  align-items:center;
+  gap:40px;
+  background:linear-gradient(135deg,#ffffff,#f1f4f7);
+  padding:45px;
+  border-radius:24px;
+  box-shadow:0 20px 55px rgba(0,0,0,.1);
+  opacity:0;
+  transform:translateY(60px);
+  transition:all .6s ease;
+}
+
+.card.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.card:hover{
+  transform:translateY(-10px) scale(1.01);
+  box-shadow:0 35px 90px rgba(0,0,0,.18);
+}
+
+.card-content{
+  flex:1;
+  text-align:left;
+}
+
+.card-content h3{
+  font-size:30px;
+  margin-bottom:16px;
+}
+
+.card-content p{
+  font-size:16px;
+  line-height:1.8;
+  color:#555;
+}
+
+.card-content a{
+  display:inline-block;
+  margin-top:26px;
+  padding:14px 36px;
+  background:#1abc9c;
+  color:#fff;
+  border-radius:40px;
+  text-decoration:none;
+  font-weight:600;
+  transition:.3s;
+}
+
+.card-content a:hover{
+  background:#159a7c;
+  transform:translateY(-2px);
+}
+
+.card-image{
+  width:240px;
+}
+
+.card-image img{
+  width:100%;
+  border-radius:20px;
+  box-shadow:0 22px 45px rgba(0,0,0,.25);
+  transform:rotate(-6deg);
+}
+
+/* ================= SPECIALITIES ================= */
+.specialities-wrapper{
+  max-width:1200px;
+  margin:20px auto 0;
+  background:#fff;
+  border-radius:24px;
+  padding:30px;
+  box-shadow:0 15px 40px rgba(0,0,0,.12);
+}
+.specialities-title{
+  font-size:28px;
+  margin-bottom:10px;
+}
+.specialities-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+.speciality-card{
+  background:#f9fafb;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 8px 22px rgba(0,0,0,.08);
+}
+.speciality-image{
+  width:100%;
+  height:160px;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.speciality-image img{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+  padding:16px;
+}
+.speciality-content{
+  padding:14px 16px 18px;
+}
+.speciality-title{
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:4px;
+}
+.speciality-subtitle{
+  font-size:13px;
+  color:#666;
+}
+/* ================= CATEGORY ================= */
+.category-card{
+  max-width:1200px;
+  margin:80px auto;
+  background:#fff;
+  border-radius:26px;
+  padding:35px;
+  box-shadow:0 20px 60px rgba(0,0,0,.12);
+}
+
+.category-card h2{
+  font-size:30px;
+  margin-bottom:30px;
+}
+
+.category-scroll{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:22px;
+  padding-bottom:15px;
+}
+
+.category-item{
+  background:#fff;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 12px 35px rgba(0,0,0,.1);
+  transition:.4s;
+}
+
+.category-item:hover{
+  transform:translateY(-8px) scale(1.02);
+  box-shadow:0 30px 80px rgba(0,0,0,.2);
+}
+
+.category-item img{
+  width:100%;
+  height:auto;
+  object-fit:contain;
+}
+
+.category-name{
+  padding:14px;
+  font-size:16px;
+  font-weight:700;
+  text-align:center;
+}
+
+/* ================= RIBBON PRODUCTS ================= */
+.trending-section,
+.arrival-section{
+  max-width:1200px;
+  margin:90px auto;
+  padding:0 10px;
+}
+
+.trending-section h2,
+.arrival-section h2{
+  font-size:32px;
+  margin-bottom:22px;
+}
+
+.product-grid{
+  display:flex;
+  gap:26px;
+  overflow-x:auto;
+  scroll-behavior:smooth;
+  padding-bottom:12px;
+}
+
+.product-grid::-webkit-scrollbar{display:none}
+
+.product-card{
+  min-width:280px;
+  background:#fff;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 18px 45px rgba(0,0,0,.12);
+  transition:.4s;
+}
+
+.product-card:hover{
+  transform:translateY(-12px);
+  box-shadow:0 35px 90px rgba(0,0,0,.25);
+}
+
+.product-image{
+  height:220px;
+  background:#f2f2f2;
+  position:relative;
+  object-fit: cover;
+}
+
+.product-image img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  padding:20px;
+}
+
+.ribbon{
+  position:absolute;
+  top:14px;
+  left:14px;
+  padding:6px 18px;
+  border-radius:30px;
+  font-size:12px;
+  font-weight:700;
+  background:#1abc9c;
+  color:#fff;
+}
+
+.product-content{
+  padding:20px;
+}
+
+.product-name{
+  font-size:17px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.price-row{
+  display:flex;
+  gap:12px;
+}
+
+.old-price{
+  color:#aaa;
+  text-decoration:line-through;
+}
+
+.price{
+  font-size:19px;
+  font-weight:800;
+}
+
+.delivery{
+  margin-top:10px;
+  font-size:14px;
+  color:#666;
+}
+
+/* ================= FEEDBACK ================= */
+.feedback-section{
+  max-width:1200px;
+  margin:60px auto 0;
+  background:#fff;
+  border-radius:24px;
+  padding:30px;
+  box-shadow:0 15px 40px rgba(0,0,0,.12);
+}
+.feedback-section h2{
+  font-size:28px;
+  margin-bottom:16px;
+}
+.feedback-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:18px;
+}
+.feedback-card{
+  background:#f9fafb;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  padding:16px;
+}
+.feedback-header{
+  font-weight:700;
+  margin-bottom:6px;
+}
+.feedback-sub{
+  color:#64748b;
+  font-size:13px;
+}
+.feedback-msg{
+  color:#374151;
+  font-size:14px;
+  margin-top:6px;
+}
+
+
+
+/* ================= FOOTER ================= */
+.site-footer{
+  background:#0f172a;
+  color:#e5e7eb;
+  padding:50px 20px;
+}
+.site-footer .container{
+  max-width:1200px;
+  margin:auto;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:30px;
+}
+.footer-col h4{
+  color:#fff;
+  font-size:18px;
+  margin-bottom:12px;
+}
+.footer-brand .tagline{
+  color:#93c5fd;
+  margin-bottom:8px;
+}
+.footer-brand p{
+  color:#cbd5e1;
+}
+.footer-list{
+  list-style:none;
+  padding:0;
+}
+.footer-list li{
+  margin-bottom:8px;
+}
+.footer-list a{
+  color:#e5e7eb;
+  text-decoration:none;
+}
+.footer-contact .item{
+  margin-bottom:8px;
+}
+.footer-contact .item label{
+  color:#9ca3af;
+  display:block;
+  font-size:12px;
+}
+.socials a{
+  color:#e5e7eb;
+  margin-right:10px;
+  text-decoration:none;
+  font-size:14px;
+}
+.footer-bottom{
+  margin-top:25px;
+  border-top:1px solid #334155;
+  padding-top:15px;
+  font-size:13px;
+  color:#94a3b8;
+}
+/* ================= RESPONSIVE ================= */
+@media(max-width:900px){
+  .category-scroll{grid-template-columns:repeat(2,1fr)}
+  .card{flex-direction:column; text-align:center}
+  .card-image{width:200px}
+}
+
+@media(max-width:600px){
+  .category-scroll{grid-template-columns:1fr}
+}
+
+/* ================= ANIMATION ================= */
+@keyframes fadeUp{
+  to{opacity:1; transform:translateY(0)}
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+  <h2 id="navTitle"></h2>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+  <ul id="navLinks"></ul>
+</nav>
+
+<header id="slider"></header>
+
+<section class="section-wrapper">
+  <div class="section-cards" id="sections"></div>
+</section>
+
+
+<div class="category-card">
+    <h2>Browse Categories</h2>
+
+    <div class="category-scroll" id="categoryContainer">
+        <!-- Dynamic content -->
+    </div>
+</div>
+
+<!-- PRIMARY RIBBON PRODUCTS -->
+<section class="trending-section" id="primaryRibbonSection">
+    <h2 id="primaryRibbonTitle"></h2>
+    <div class="product-grid" id="primaryRibbonGrid"></div>
+</section>
+
+<!-- SECONDARY RIBBON PRODUCTS -->
+<section class="arrival-section" id="secondaryRibbonSection">
+    <h2 id="secondaryRibbonTitle"></h2>
+    <div class="product-grid" id="secondaryRibbonGrid"></div>
+</section>
+
+<section class="feedback-section" id="feedbackSection" style="display:none;">
+  <h2>Feedback</h2>
+  <div class="feedback-list" id="feedbackList"></div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <h4 id="footerBrand"></h4>
+        <div class="tagline" id="footerTagline"></div>
+        <p id="footerDesc"></p>
+        <div class="socials" id="footerSocials"></div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-list" id="footerQuick"></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Categories</h4>
+        <ul class="footer-list" id="footerCats"></ul>
+      </div>
+      <div class="footer-col footer-contact">
+        <h4>Contact</h4>
+        <div class="item"><label>Address</label><div id="footerAddress"></div></div>
+        <div class="item"><label>Phone</label><div id="footerPhone"></div></div>
+        <div class="item"><label>Email</label><div id="footerEmail"></div></div>
+        <div class="item"><label>Hours</label><div id="footerHours"></div></div>
+      </div>
+    </div>
+    <div class="footer-bottom">© <span id="footerYear"></span> <span id="footerBrandLine"></span></div>
+  </div>
+ </footer>
+
+<script>
+
+let current = 0;
+
+function toggleMenu(){
+  navLinks.classList.toggle('show');
+}
+
+fetch('/api/pages')
+.then(res => res.json())
+.then(data => {
+
+  navTitle.innerText = data.navigation_title;
+
+  navLinks.innerHTML = `
+    <li><a href="/home">${data.pages.page1.title}</a></li>
+    <li><a href="/about">${data.pages.page2.title}</a></li>
+    <li><a href="/services">${data.pages.page3.title}</a></li>
+    <li><a href="/contact">${data.pages.page4.title}</a></li>
+  `;
+
+  /* ================= SLIDER ================= */
+  slider.innerHTML = data.pages.page1.images.map(img => `
+    <div class="slide">
+      <img src="/uploads/${img.file}">
+      <div class="hero-content">
+        <div class="hero-inner">
+          <h1>${img.heading}</h1>
+          <p>${img.detail}</p>
+          <button>${img.button}</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  const slides = document.querySelectorAll('.slide');
+  slides[0].classList.add('active');
+
+  setInterval(() => {
+    slides[current].classList.remove('active');
+    current = (current + 1) % slides.length;
+    slides[current].classList.add('active');
+  }, 4000);
+
+  /* ================= ABOUT SECTION (FIXED) ================= */
+  sections.innerHTML = data.pages.page1.sections
+    .filter(sec => sec.name && sec.details)   // ✅ IMPORTANT FIX
+    .map(sec => `
+      <div class="card">
+        <div class="card-content">
+          <h3>${sec.name}</h3>
+          <p>${sec.details}</p>
+          <a href="/about">${sec.button}</a>
+        </div>
+        <div class="card-image">
+          <img src="/uploads/${sec.file}">
+        </div>
+      </div>
+    `).join('');
+
+  document.querySelectorAll('.card').forEach((card, i) => {
+    setTimeout(() => card.classList.add('show'), 500 + i * 220);
+  });
+  
+  const specialities = data.pages?.page1?.specialities || [];
+  if (Array.isArray(specialities) && specialities.some(s => s && (s.title || s.subtitle || s.image))) {
+    const sw = document.createElement('div');
+    sw.className = 'specialities-wrapper';
+    const st = document.createElement('h2');
+    st.className = 'specialities-title';
+    st.textContent = 'Our Specialities';
+    const grid = document.createElement('div');
+    grid.className = 'specialities-grid';
+    specialities.forEach(sp => {
+      if (!sp) return;
+      const card = document.createElement('div');
+      card.className = 'speciality-card';
+      const imgBox = document.createElement('div');
+      imgBox.className = 'speciality-image';
+      const img = document.createElement('img');
+      img.src = `/uploads/${sp.image}`;
+      img.onerror = function(){ this.src = 'https://via.placeholder.com/300x160?text=No+Image'; };
+      imgBox.appendChild(img);
+      const content = document.createElement('div');
+      content.className = 'speciality-content';
+      const title = document.createElement('div');
+      title.className = 'speciality-title';
+      title.textContent = sp.title || '';
+      const subtitle = document.createElement('div');
+      subtitle.className = 'speciality-subtitle';
+      subtitle.textContent = sp.subtitle || '';
+      content.append(title, subtitle);
+      card.append(imgBox, content);
+      grid.appendChild(card);
+    });
+    sw.append(st, grid);
+    document.querySelector('.section-cards').appendChild(sw);
+  }
+  
+  const feedbacks = (data.pages?.page1?.feedbacks && Array.isArray(data.pages.page1.feedbacks) ? data.pages.page1.feedbacks : (data.pages?.page2?.feedbacks && Array.isArray(data.pages.page2.feedbacks) ? data.pages.page2.feedbacks : [])).filter(f => f && (f.name || f.sub || f.message));
+  if (feedbacks.length) {
+    const list = document.getElementById('feedbackList');
+    list.innerHTML = feedbacks.map(f => `
+      <div class="feedback-card">
+        <div class="feedback-header">${f.name || ''} ${f.sub ? `<span class="feedback-sub">• ${f.sub}</span>` : ''}</div>
+        <div class="feedback-msg">${f.message || ''}</div>
+      </div>
+    `).join('');
+    document.getElementById('feedbackSection').style.display = 'block';
+  }
+});
+
+/* ================= CATEGORY (FROM PAGE DATA) ================= */
+async function loadCategories(){
+  try {
+    // 1. Get the list of selected categories from PageHeader
+    const pageRes = await fetch('/api/pages');
+    const pageData = await pageRes.json();
+    const selectedNames = pageData.pages?.page1?.categories || [];
+
+    // 2. Get the full category details (images)
+    const catRes = await fetch('/categories-view');
+    const allCategories = await catRes.json();
+
+    const container = document.getElementById('categoryContainer');
+    container.innerHTML = '';
+
+    // 3. Determine which categories to show
+    let categoriesToShow = [];
+
+    if (selectedNames.length > 0) {
+      // Filter allCategories to match the selected names
+      // We map selectedNames to preserve the order set in add.html
+      categoriesToShow = selectedNames.map(name => 
+        allCategories.find(c => c.category === name)
+      ).filter(c => c); // Remove undefined (if category was deleted)
+    } else {
+      // Fallback: Show first 8 if nothing selected
+      categoriesToShow = allCategories.slice(0, 8);
+    }
+
+    // 4. Render
+    if (categoriesToShow.length === 0) {
+      container.innerHTML = '<p style="padding:20px; text-align:center; width:100%">No categories found.</p>';
+      return;
+    }
+
+    categoriesToShow.forEach(cat => {
+      container.innerHTML += `
+        <div class="category-item">
+          <img src="/uploads/${cat.categoryImage}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+          <div class="category-name">${cat.category}</div>
+        </div>
+      `;
+    });
+
+  } catch (err) {
+    console.error('Failed to load categories', err);
+  }
+}
+loadCategories();
+
+/* ================= HOME RIBBONS ================= */
+async function loadHomeRibbonProducts() {
+  try {
+    const res = await fetch('/api/home-ribbon-products');
+    const data = await res.json();
+
+    if (data.primary?.products.length) {
+      primaryRibbonTitle.innerText = data.primary.name;
+      primaryRibbonGrid.innerHTML = data.primary.products.map(p => `
+        <div class="product-card">
+          <div class="product-image">
+            <span class="ribbon">${data.primary.name}</span>
+            <img src="/uploads/${p.image}">
+          </div>
+          <div class="product-content">
+            <div class="product-name">${p.name}</div>
+            <div class="price-row">
+              <span class="old-price">₹${p.oldPrice}</span>
+              <span class="price">₹${p.price}</span>
+            </div>
+            <div class="delivery">${p.delivery}</div>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      primaryRibbonSection.style.display = 'none';
+    }
+
+    if (data.secondary?.products.length) {
+      secondaryRibbonTitle.innerText = data.secondary.name;
+      secondaryRibbonGrid.innerHTML = data.secondary.products.map(p => `
+        <div class="product-card">
+          <div class="product-image">
+            <span class="ribbon">${data.secondary.name}</span>
+            <img src="/uploads/${p.image}">
+          </div>
+          <div class="product-content">
+            <div class="product-name">${p.name}</div>
+            <div class="price-row">
+              <span class="old-price">₹${p.oldPrice}</span>
+              <span class="price">₹${p.price}</span>
+            </div>
+            <div class="delivery">${p.delivery}</div>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      secondaryRibbonSection.style.display = 'none';
+    }
+
+  } catch (err) {
+    console.error('Ribbon load failed', err);
+  }
+}
+loadHomeRibbonProducts();
+
+async function loadFooter(){
+  try{
+    const res = await fetch('/api/pages');
+    const data = await res.json();
+    const f = data.pages?.footer || {};
+    footerBrand.innerText = f.brand || '';
+    footerTagline.innerText = f.tagline || '';
+    footerDesc.innerText = f.description || '';
+    const socials = f.social || {};
+    footerSocials.innerHTML = '';
+    ['facebook','instagram','twitter','youtube'].forEach(k=>{
+      if(socials[k]){
+        const a = document.createElement('a');
+        a.href = socials[k];
+        a.textContent = k;
+        a.target = '_blank';
+        footerSocials.appendChild(a);
+      }
+    });
+    const quick = f.quickLinks || [];
+    const routes = ['/home','/about','/services','/contact'];
+    footerQuick.innerHTML = quick.map((t,i)=>`<li><a href="${routes[i]||'#'}">${t}</a></li>`).join('');
+    const cats = f.categories || [];
+    footerCats.innerHTML = cats.map(c=>`<li><a href="#">${c}</a></li>`).join('');
+    footerAddress.innerText = f.contact?.address || '';
+    footerPhone.innerText = f.contact?.phone || '';
+    footerEmail.innerText = f.contact?.email || '';
+    footerHours.innerText = f.contact?.hours || '';
+    footerYear.innerText = new Date().getFullYear();
+    footerBrandLine.innerText = f.brand || '';
+  }catch(e){
+    console.error('Footer load failed', e);
+  }
+}
+loadFooter();
+
+</script>
+
+</body>
+</html>

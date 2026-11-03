@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Contact Us • Dynamic Store</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --dark: #0f172a;
+  --slate-800: #1e293b;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-400: #94a3b8;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --slate-50: #f8fafc;
+  --white: #ffffff;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-md: 0 10px 25px -5px rgba(0,0,0,0.07);
+  --shadow-lg: 0 20px 40px -10px rgba(0,0,0,0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+  background: var(--slate-50);
+  color: var(--dark);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ================= NAV ================= */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 40px;
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(12px);
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+nav h2 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+nav ul li a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  transition: all 0.25s ease;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: #fff;
+  background: rgba(255,255,255,0.1);
+}
+
+.menu {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #fff;
+}
+
+/* ================= HERO ================= */
+header {
+  position: relative;
+  height: 55vh;
+  min-height: 360px;
+  overflow: hidden;
+  background: #020617;
+}
+
+header img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(2, 6, 23, 0.88) 0%, rgba(2, 6, 23, 0.5) 60%, rgba(2, 6, 23, 0.3) 100%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  transform: translateY(-50%);
+  color: #fff;
+  max-width: 600px;
+  z-index: 2;
+}
+
+.hero-inner {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-inner h1 {
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 14px;
+  color: #ffffff;
+}
+
+.hero-inner p {
+  font-size: 17px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= CONTACT SECTION ================= */
+.contact-section {
+  padding: 85px 0 60px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 55px;
+}
+
+.section-header h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.section-header p {
+  color: var(--slate-600);
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 26px;
+  margin-bottom: 40px;
+}
+
+.contact-card {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 32px 26px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-light);
+}
+
+.contact-card-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: var(--primary-light);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.contact-card h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+
+.contact-card .value {
+  color: var(--slate-600);
+  font-size: 15px;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.contact-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 60px;
+}
+
+.contact-actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14.5px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+}
+
+.contact-actions a:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.35);
+}
+
+/* ================= CONTACT FORM & MAP SPLIT ================= */
+.interaction-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 80px;
+  align-items: stretch;
+}
+
+.inquiry-card {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: var(--shadow-md);
+}
+
+.inquiry-card h3 {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+
+.inquiry-card p {
+  color: var(--slate-600);
+  font-size: 14.5px;
+  margin-bottom: 24px;
+}
+
+.form-row {
+  margin-bottom: 18px;
+}
+
+.form-row label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--slate-700);
+  margin-bottom: 6px;
+}
+
+.form-row input,
+.form-row textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  outline: none;
+  background: var(--slate-50);
+  transition: all 0.2s ease;
+}
+
+.form-row input:focus,
+.form-row textarea:focus {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.form-row textarea {
+  height: 110px;
+  resize: vertical;
+}
+
+.btn-send {
+  display: inline-block;
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.25s ease;
+}
+
+.btn-send:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+/* ================= MAP PREVIEW ================= */
+.map-card {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+}
+
+.map-card h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.map-wrapper {
+  flex: 1;
+  min-height: 380px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--slate-100);
+  border: 1px solid var(--slate-200);
+}
+
+.map-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  border: 0;
+  display: block;
+}
+
+/* ================= FOOTER ================= */
+.site-footer {
+  background: #020617;
+  color: #e5e7eb;
+  padding: 70px 0 30px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 40px;
+}
+
+.footer-col h4 {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.footer-brand .tagline {
+  color: #818cf8;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.footer-brand p {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.footer-list {
+  list-style: none;
+}
+
+.footer-list li {
+  margin-bottom: 10px;
+}
+
+.footer-list a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.footer-list a:hover {
+  color: #fff;
+}
+
+.footer-contact .item {
+  margin-bottom: 12px;
+}
+
+.footer-contact label {
+  display: block;
+  font-size: 12px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.footer-contact div {
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.socials {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.socials a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 13px;
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.06);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  text-transform: capitalize;
+}
+
+.socials a:hover {
+  color: #fff;
+  background: var(--primary);
+}
+
+.footer-bottom {
+  margin-top: 50px;
+  padding-top: 24px;
+  border-top: 1px solid #1e293b;
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 992px) {
+  .interaction-split {
+    grid-template-columns: 1fr;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    padding: 16px 20px;
+  }
+  .menu {
+    display: block;
+  }
+  nav ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    flex-direction: column;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  nav ul.active {
+    display: flex;
+  }
+  .hero-content {
+    left: 6%;
+    right: 6%;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .contact-section {
+    padding: 55px 0 30px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+  <h2 id="navTitle"></h2>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+  <ul id="navLinks"></ul>
+</nav>
+
+<!-- HERO -->
+<header id="hero"></header>
+
+<!-- CONTACT MAIN SECTION -->
+<section class="contact-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Get in Touch</h2>
+      <p>Have questions or need assistance? Reach out to our dedicated support team.</p>
+    </div>
+
+    <!-- 4 Contact Cards -->
+    <div id="contact-grid" class="contact-grid"></div>
+
+    <!-- Action Buttons -->
+    <div id="contact-actions" class="contact-actions"></div>
+
+    <!-- Interactive Section: Message form + Map -->
+    <div class="interaction-split">
+      <div class="inquiry-card">
+        <h3>Send us a Message</h3>
+        <p>Fill out the form below and we will respond within 24 hours.</p>
+        <form onsubmit="handleInquiry(event)">
+          <div class="form-row">
+            <label>Your Name</label>
+            <input type="text" placeholder="John Doe" required>
+          </div>
+          <div class="form-row">
+            <label>Your Email</label>
+            <input type="email" placeholder="john@example.com" required>
+          </div>
+          <div class="form-row">
+            <label>Subject</label>
+            <input type="text" placeholder="Inquiry about product..." required>
+          </div>
+          <div class="form-row">
+            <label>Message</label>
+            <textarea placeholder="Write your message here..." required></textarea>
+          </div>
+          <button type="submit" class="btn-send">Send Message</button>
+        </form>
+      </div>
+
+      <div class="map-card" id="mapCardContainer">
+        <h3>Our Location</h3>
+        <div class="map-wrapper" id="mapPreview">
+          <iframe id="mapFrame" title="Location Map"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <h4 id="footerBrand"></h4>
+        <div class="tagline" id="footerTagline"></div>
+        <p id="footerDesc"></p>
+        <div class="socials" id="footerSocials"></div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-list" id="footerQuick"></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Categories</h4>
+        <ul class="footer-list" id="footerCats"></ul>
+      </div>
+      <div class="footer-col footer-contact">
+        <h4>Contact</h4>
+        <div class="item"><label>Address</label><div id="footerAddress"></div></div>
+        <div class="item"><label>Phone</label><div id="footerPhone"></div></div>
+        <div class="item"><label>Email</label><div id="footerEmail"></div></div>
+        <div class="item"><label>Hours</label><div id="footerHours"></div></div>
+      </div>
+    </div>
+    <div class="footer-bottom">© <span id="footerYear"></span> <span id="footerBrandLine"></span> • All Rights Reserved</div>
+  </div>
+</footer>
+
+<script>
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('active');
+}
+
+function handleInquiry(e) {
+  e.preventDefault();
+  alert('Thank you for contacting us! We have received your message.');
+  e.target.reset();
+}
+
+fetch('/api/pages')
+.then(res => res.json())
+.then(data => {
+
+  /* NAV */
+  navTitle.innerText = data.navigation_title || 'Store';
+
+  const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+  const profileLabel = user?.username ? `👤 ${user.username}` : '👤 Profile';
+  const adminHubLink = user?.role === 'admin'
+    ? `<li><a href="/controls" style="background:rgba(255,255,255,0.12);color:#e2e8f0;padding:7px 14px;border-radius:var(--radius-sm);font-weight:600;display:inline-flex;align-items:center;gap:6px;">⚙️ Admin Hub</a></li>`
+    : '';
+
+  navLinks.innerHTML = `
+    <li><a href="/home">${data.pages.page1.title}</a></li>
+    <li><a href="/about">${data.pages.page2.title}</a></li>
+    <li><a href="/services">${data.pages.page3.title}</a></li>
+    <li><a href="/contact" class="active">${data.pages.page4.title}</a></li>
+    ${adminHubLink}
+    <li><a href="/profile" style="background:var(--primary);color:#fff;padding:7px 16px;border-radius:var(--radius-sm);font-weight:600;display:inline-flex;align-items:center;gap:6px;">${profileLabel}</a></li>
+  `;
+
+  /* HERO */
+  hero.innerHTML = `
+    <img src="/uploads/${data.pages.page4.image}" onerror="this.src='https://images.unsplash.com/photo-1534536281715-e28d76689b4d?auto=format&fit=crop&w=1600&q=80'">
+    <div class="hero-content">
+      <div class="hero-inner">
+        <h1>${data.pages.page4.heading || 'Get in Touch'}</h1>
+        <p>${data.pages.page4.detail || 'We are here to help and answer any questions you might have.'}</p>
+      </div>
+    </div>
+  `;
+  
+  const c = data.pages.page4?.contact || {};
+  const address =
+    c.address ||
+    [c.dnumber, c.streetname, c.city, c.district, c.state, c.zipcode]
+      .filter(Boolean)
+      .join(', ');
+  const phone = [c.primaryphone, c.secondaryphone].filter(Boolean).join(' / ') || c.phone || '';
+  const email = c.supportemail || c.email || '';
+  const hours = c.workinghours || c.hours || '';
+
+  const cg = document.getElementById('contact-grid');
+  cg.innerHTML = `
+    <div class="contact-card">
+      <div class="contact-card-icon">📍</div>
+      <h4>Store Address</h4>
+      <div class="value">${address || 'Address details coming soon'}</div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-card-icon">📞</div>
+      <h4>Phone Support</h4>
+      <div class="value">${phone || 'Contact number coming soon'}</div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-card-icon">✉️</div>
+      <h4>Email Address</h4>
+      <div class="value">${email || 'Support email coming soon'}</div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-card-icon">⏰</div>
+      <h4>Business Hours</h4>
+      <div class="value">${hours || 'Mon - Sat: 9:00 AM - 7:00 PM'}</div>
+    </div>
+  `;
+
+  const actions = document.getElementById('contact-actions');
+  actions.innerHTML = '';
+  if (phone) {
+    const callBtn = document.createElement('a');
+    callBtn.href = `tel:${phone.split('/')[0].trim()}`;
+    callBtn.innerHTML = `📞 Call Now`;
+    actions.appendChild(callBtn);
+  }
+  if (email) {
+    const emailBtn = document.createElement('a');
+    emailBtn.href = `mailto:${email}`;
+    emailBtn.innerHTML = `✉️ Email Us`;
+    actions.appendChild(emailBtn);
+  }
+  if (c.mapUrl) {
+    const a = document.createElement('a');
+    a.href = c.mapUrl;
+    a.innerHTML = `🗺️ View Full Map`;
+    a.target = '_blank';
+    actions.appendChild(a);
+  }
+
+  const mp = document.getElementById('mapPreview');
+  const mf = document.getElementById('mapFrame');
+  const mapContainer = document.getElementById('mapCardContainer');
+  if (c.mapUrl) {
+    mf.src = c.mapUrl;
+    mp.style.display = 'block';
+  } else {
+    // Default pleasant placeholder map or fallback location
+    mf.src = 'https://maps.google.com/maps?q=Chennai&t=&z=13&ie=UTF8&iwloc=&output=embed';
+    mp.style.display = 'block';
+  }
+  
+  /* FOOTER */
+  const f = data.pages?.footer || {};
+  footerBrand.innerText = f.brand || '';
+  footerTagline.innerText = f.tagline || '';
+  footerDesc.innerText = f.description || '';
+  const socials = f.social || {};
+  footerSocials.innerHTML = '';
+  ['facebook','instagram','twitter','youtube'].forEach(k=>{
+    if(socials[k]){
+      const a = document.createElement('a');
+      a.href = socials[k];
+      a.textContent = k;
+      a.target = '_blank';
+      footerSocials.appendChild(a);
+    }
+  });
+  const quick = f.quickLinks || [];
+  const routes = ['/home','/about','/services','/contact'];
+  footerQuick.innerHTML = quick.map((t,i)=>`<li><a href="${routes[i]||'#'}">${t}</a></li>`).join('');
+  const cats = f.categories || [];
+  footerCats.innerHTML = cats.map(c=>`<li><a href="#">${c}</a></li>`).join('');
+  footerAddress.innerText = f.contact?.address || '';
+  footerPhone.innerText = f.contact?.phone || '';
+  footerEmail.innerText = f.contact?.email || '';
+  footerHours.innerText = f.contact?.hours || '';
+  footerYear.innerText = new Date().getFullYear();
+  footerBrandLine.innerText = f.brand || '';
+});
+</script>
+
+</body>
+</html>

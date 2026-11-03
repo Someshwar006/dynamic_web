@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard & Controls</title>
+
+<style>
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --dark: #0f172a;
+  --slate-700: #334155;
+  --slate-500: #64748b;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --white: #ffffff;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-hover: 0 20px 25px -5px rgba(79, 70, 229, 0.15), 0 8px 10px -6px rgba(79, 70, 229, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #3730a3, #4f46e5, #6366f1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: var(--dark);
+}
+
+.dashboard {
+  background: var(--white);
+  width: 100%;
+  max-width: 1100px;
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* TOP BAR */
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 35px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.dash-title h2 {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--dark);
+  letter-spacing: -0.02em;
+}
+
+.dash-title p {
+  color: var(--slate-500);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.dash-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: var(--slate-100);
+  color: var(--slate-700);
+  border: 1px solid var(--slate-200);
+}
+
+.btn-secondary:hover {
+  background: var(--slate-200);
+}
+
+/* SECTION GROUPS */
+.group-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--slate-500);
+  margin: 28px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.group-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--slate-200);
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+/* CARD */
+.card {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  text-decoration: none;
+  color: var(--dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 125px;
+  box-shadow: var(--shadow-card);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--primary);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: #c7d2fe;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.card-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.card-icon {
+  font-size: 20px;
+}
+
+.card strong {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.3;
+}
+
+.card p {
+  font-size: 13px;
+  color: var(--slate-500);
+  margin-top: 6px;
+}
+
+/* FOOTER */
+.dash-footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--slate-200);
+  font-size: 13px;
+  color: var(--slate-500);
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 24px;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+    <!-- TOP BAR -->
+    <div class="dash-header">
+        <div class="dash-title">
+            <h2>Admin Control Hub</h2>
+            <p>Complete self-service dashboard to manage content, products, and site settings</p>
+        </div>
+        <div class="dash-actions">
+            <a href="/home" class="action-btn btn-primary" target="_blank">
+                <span>👁️</span> View Live Website
+            </a>
+            <a href="/login" class="action-btn btn-secondary">
+                <span>🚪</span> Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- 1. WEBSITE CMS -->
+    <div class="group-title">Website Content Management</div>
+    <div class="grid">
+        <a href="/add" class="card">
+            <div class="card-top">
+                <span class="card-badge">Setup</span>
+                <span class="card-icon">🎨</span>
+            </div>
+            <strong>Customize Pages</strong>
+            <p>Upload hero banners, about details, mission, vision & footer</p>
+        </a>
+
+        <a href="/list" class="card">
+            <div class="card-top">
+                <span class="card-badge">Live CMS</span>
+                <span class="card-icon">✍️</span>
+            </div>
+            <strong>Edit Page Content</strong>
+            <p>In-place visual text editor and live image swapper</p>
+        </a>
+
+        <a href="/deleted" class="card">
+            <div class="card-top">
+                <span class="card-badge" style="color:#ef4444; background:#fee2e2;">Safety Net</span>
+                <span class="card-icon">♻️</span>
+            </div>
+            <strong>Deleted Items</strong>
+            <p>Recycle bin to restore accidentally deleted sections</p>
+        </a>
+    </div>
+
+    <!-- 2. ORDERS & CUSTOMER FULFILLMENT -->
+    <div class="group-title">Customer Orders & Fulfillment</div>
+    <div class="grid">
+        <a href="/orders" class="card" style="border: 2px solid #c7d2fe; background: #fafbff;">
+            <div class="card-top">
+                <span class="card-badge" style="background:#e0e7ff; color:#4338ca;">Fulfillment</span>
+                <span class="card-icon">📦</span>
+            </div>
+            <strong>Manage Customer Orders</strong>
+            <p>Review incoming customer orders, accept orders, and mark products delivered</p>
+        </a>
+    </div>
+
+    <!-- 3. PRODUCTS & STORE -->
+    <div class="group-title">E-Commerce & Catalog</div>
+    <div class="grid">
+        <a href="/prod" class="card">
+            <div class="card-top">
+                <span class="card-badge">Inventory</span>
+                <span class="card-icon">➕</span>
+            </div>
+            <strong>Add Product</strong>
+            <p>Create new item with photos, pricing, stock, category & ribbon</p>
+        </a>
+
+        <a href="/listproduct" class="card">
+            <div class="card-top">
+                <span class="card-badge">Catalog</span>
+                <span class="card-icon">📦</span>
+            </div>
+            <strong>Manage Products</strong>
+            <p>View all products, edit prices, toggle stock or delete</p>
+        </a>
+
+        <a href="/category" class="card">
+            <div class="card-top">
+                <span class="card-badge">Taxonomy</span>
+                <span class="card-icon">📁</span>
+            </div>
+            <strong>Add Category</strong>
+            <p>Create new categories with custom thumbnails & subcategories</p>
+        </a>
+
+        <a href="/listcategory" class="card">
+            <div class="card-top">
+                <span class="card-badge">Taxonomy</span>
+                <span class="card-icon">🗂️</span>
+            </div>
+            <strong>Edit Categories</strong>
+            <p>Manage existing categories, replace icons & update subcategories</p>
+        </a>
+    </div>
+
+    <!-- 3. RIBBONS & PROMOTIONS -->
+    <div class="group-title">Badges & Marketing</div>
+    <div class="grid">
+        <a href="/rippon" class="card">
+            <div class="card-top">
+                <span class="card-badge">Promotions</span>
+                <span class="card-icon">🏷️</span>
+            </div>
+            <strong>Add Ribbon</strong>
+            <p>Create promo tags like "Trending", "New Arrival" or "Hot Offer"</p>
+        </a>
+
+        <a href="/listrippon" class="card">
+            <div class="card-top">
+                <span class="card-badge">Promotions</span>
+                <span class="card-icon">📋</span>
+            </div>
+            <strong>Edit Ribbons</strong>
+            <p>Manage, rename, or remove promotional badge tags</p>
+        </a>
+    </div>
+
+    <div class="dash-footer">
+        © Dynamic CMS Platform • Authorized Admin Management Panel
+    </div>
+</div>
+
+<script>
+  if (new URLSearchParams(window.location.search).get('saved') === '1') {
+    const banner = document.createElement('div');
+    banner.style.cssText = 'background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; padding:14px 20px; border-radius:10px; margin-bottom:24px; font-weight:600; display:flex; align-items:center; gap:10px; font-size:14px; box-shadow:0 2px 4px rgba(0,0,0,0.04);';
+    banner.innerHTML = '<span style="font-size:18px;">✅</span> Website content and setup saved successfully!';
+    const dash = document.querySelector('.dashboard');
+    const header = document.querySelector('.dash-header');
+    if (dash && header) {
+      dash.insertBefore(banner, header.nextSibling);
+    }
+    // Clean query param from URL without refreshing
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+</script>
+</body>
+</html>

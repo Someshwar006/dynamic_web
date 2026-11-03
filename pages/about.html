@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>About Us • Dynamic Store</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --dark: #0f172a;
+  --slate-800: #1e293b;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-400: #94a3b8;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --slate-50: #f8fafc;
+  --white: #ffffff;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-md: 0 10px 25px -5px rgba(0,0,0,0.07);
+  --shadow-lg: 0 20px 40px -10px rgba(0,0,0,0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+  background: var(--slate-50);
+  color: var(--dark);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ================= NAV ================= */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 40px;
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(12px);
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+nav h2 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+nav ul li a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  transition: all 0.25s ease;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: #fff;
+  background: rgba(255,255,255,0.1);
+}
+
+.menu {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #fff;
+}
+
+/* ================= HERO ================= */
+header {
+  position: relative;
+  height: 60vh;
+  min-height: 380px;
+  overflow: hidden;
+  background: #020617;
+}
+
+header img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(2, 6, 23, 0.88) 0%, rgba(2, 6, 23, 0.5) 60%, rgba(2, 6, 23, 0.3) 100%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  transform: translateY(-50%);
+  color: #fff;
+  max-width: 600px;
+  z-index: 2;
+}
+
+.hero-inner {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-inner h1 {
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+  color: #ffffff;
+}
+
+.hero-inner p {
+  font-size: 17px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= SECTIONS GLOBAL ================= */
+section {
+  padding: 85px 0;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 55px;
+}
+
+.section-title h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.section-title p {
+  color: var(--slate-600);
+  font-size: 16px;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* ================= ABOUT SECTION ================= */
+.about {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.about-img-wrap {
+  text-align: center;
+  position: relative;
+}
+
+.about img {
+  width: 100%;
+  max-width: 440px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  object-fit: cover;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  background: var(--white);
+  border: 4px solid var(--white);
+}
+
+.about img:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 25px 50px -10px rgba(0,0,0,0.18);
+}
+
+.about-content h3 {
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+  margin-bottom: 18px;
+}
+
+.about-content p {
+  color: var(--slate-600);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+/* ================= CORE VALUES ================= */
+.core {
+  background: var(--white);
+  border-top: 1px solid var(--slate-200);
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.core-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.core-card {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.core-card:hover {
+  transform: translateY(-8px);
+  background: var(--white);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-light);
+}
+
+.core-card img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  margin-bottom: 20px;
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--primary-light);
+}
+
+.core-card h4 {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+
+.core-card p {
+  color: var(--slate-600);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+/* ================= WHY US ================= */
+.why-us {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.why-us ul {
+  list-style: none;
+  padding: 0;
+}
+
+.why-us li {
+  margin-bottom: 16px;
+  padding: 14px 18px 14px 44px;
+  position: relative;
+  color: var(--slate-700);
+  font-size: 15.5px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s ease;
+}
+
+.why-us li:hover {
+  transform: translateX(6px);
+  border-color: var(--primary);
+}
+
+.why-us li::before {
+  content: "✓";
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.why-us img {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  object-fit: cover;
+}
+
+/* ================= MISSION ================= */
+.mission {
+  background: var(--slate-100);
+}
+
+.mission-box {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+}
+
+.mission-card {
+  background: var(--white);
+  padding: 34px 28px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.mission-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+}
+
+.mission-card h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+
+.mission-card p {
+  color: var(--slate-600);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+/* ================= VISION ================= */
+.vision {
+  background: var(--white);
+}
+
+.vision-details {
+  text-align: center;
+  color: var(--slate-600);
+  font-size: 17px;
+  max-width: 760px;
+  margin: 0 auto 35px;
+  line-height: 1.8;
+}
+
+.vision-points {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 26px;
+  padding: 0;
+}
+
+.vision-points li {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  padding: 28px 24px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.vision-points li:hover {
+  transform: translateY(-6px);
+  background: var(--white);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-light);
+}
+
+.vision-points li strong {
+  display: block;
+  font-size: 17px;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+
+.vision-points li p {
+  color: var(--slate-600);
+  font-size: 14px;
+  margin: 0;
+}
+
+/* ================= FOOTER ================= */
+.site-footer {
+  background: #020617;
+  color: #e5e7eb;
+  padding: 70px 0 30px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 40px;
+}
+
+.footer-col h4 {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.footer-brand .tagline {
+  color: #818cf8;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.footer-brand p {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.footer-list {
+  list-style: none;
+}
+
+.footer-list li {
+  margin-bottom: 10px;
+}
+
+.footer-list a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.footer-list a:hover {
+  color: #fff;
+}
+
+.footer-contact .item {
+  margin-bottom: 12px;
+}
+
+.footer-contact label {
+  display: block;
+  font-size: 12px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.footer-contact div {
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.socials {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.socials a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 13px;
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.06);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  text-transform: capitalize;
+}
+
+.socials a:hover {
+  color: #fff;
+  background: var(--primary);
+}
+
+.footer-bottom {
+  margin-top: 50px;
+  padding-top: 24px;
+  border-top: 1px solid #1e293b;
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 992px) {
+  .about, .why-us {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .about img, .why-us img {
+    margin: 0 auto;
+  }
+  .why-us li {
+    text-align: left;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    padding: 16px 20px;
+  }
+  .menu {
+    display: block;
+  }
+  nav ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    flex-direction: column;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  nav ul.active {
+    display: flex;
+  }
+  .hero-content {
+    left: 6%;
+    right: 6%;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  section {
+    padding: 55px 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+  <h2 id="navTitle"></h2>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+  <ul id="navLinks"></ul>
+</nav>
+
+<!-- HERO -->
+<header id="hero"></header>
+
+<!-- ABOUT -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2 id="aboutTitle"></h2>
+      <p id="aboutSubtitle"></p>
+    </div>
+
+    <div class="about">
+      <div class="about-img-wrap">
+        <img id="aboutImg" alt="About Us">
+      </div>
+      <div class="about-content">
+        <h3 id="aboutHeading"></h3>
+        <p id="aboutDetails"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CORE VALUES -->
+<section class="core">
+  <div class="container">
+    <div class="section-title">
+      <h2 id="coreTitle"></h2>
+      <p id="coreSubtitle"></p>
+    </div>
+    <div class="core-grid" id="coreCards"></div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2 id="whyTitle"></h2>
+      <p id="whySubtitle"></p>
+    </div>
+
+    <div class="why-us">
+      <ul id="whyFeatures"></ul>
+      <img id="whyImg" alt="Why Choose Us">
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="mission">
+  <div class="container">
+    <div class="section-title">
+      <h2 id="missionTitle"></h2>
+      <p id="missionSubtitle"></p>
+    </div>
+    <div class="mission-box" id="missionCards"></div>
+  </div>
+</section>
+
+<!-- VISION -->
+<section class="vision">
+  <div class="container">
+    <div class="section-title">
+      <h2 id="visionTitle"></h2>
+      <p id="visionSubtitle"></p>
+    </div>
+    <div class="vision-grid">
+      <div>
+        <p id="visionDetails" class="vision-details"></p>
+        <ul id="visionPoints" class="vision-points"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <h4 id="footerBrand"></h4>
+        <div class="tagline" id="footerTagline"></div>
+        <p id="footerDesc"></p>
+        <div class="socials" id="footerSocials"></div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-list" id="footerQuick"></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Categories</h4>
+        <ul class="footer-list" id="footerCats"></ul>
+      </div>
+      <div class="footer-col footer-contact">
+        <h4>Contact</h4>
+        <div class="item"><label>Address</label><div id="footerAddress"></div></div>
+        <div class="item"><label>Phone</label><div id="footerPhone"></div></div>
+        <div class="item"><label>Email</label><div id="footerEmail"></div></div>
+        <div class="item"><label>Hours</label><div id="footerHours"></div></div>
+      </div>
+    </div>
+    <div class="footer-bottom">© <span id="footerYear"></span> <span id="footerBrandLine"></span> • All Rights Reserved</div>
+  </div>
+</footer>
+
+<script>
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('active');
+}
+
+fetch('/api/pages')
+.then(res=>res.json())
+.then(data=>{
+
+  /* NAV */
+  navTitle.innerText = data.navigation_title || 'Store';
+
+  const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+  const profileLabel = user?.username ? `👤 ${user.username}` : '👤 Profile';
+  const adminHubLink = user?.role === 'admin'
+    ? `<li><a href="/controls" style="background:rgba(255,255,255,0.12);color:#e2e8f0;padding:7px 14px;border-radius:var(--radius-sm);font-weight:600;display:inline-flex;align-items:center;gap:6px;">⚙️ Admin Hub</a></li>`
+    : '';
+
+  navLinks.innerHTML = `
+    <li><a href="/home">${data.pages.page1.title}</a></li>
+    <li><a href="/about" class="active">${data.pages.page2.title}</a></li>
+    <li><a href="/services">${data.pages.page3.title}</a></li>
+    <li><a href="/contact">${data.pages.page4.title}</a></li>
+    ${adminHubLink}
+    <li><a href="/profile" style="background:var(--primary);color:#fff;padding:7px 16px;border-radius:var(--radius-sm);font-weight:600;display:inline-flex;align-items:center;gap:6px;">${profileLabel}</a></li>
+  `;
+
+  const p = data.pages.page2;
+
+  /* HERO */
+  hero.innerHTML = `
+    <img src="/uploads/${p.header.image}" onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80'">
+    <div class="hero-content">
+      <div class="hero-inner">
+        <h1>${p.title}</h1>
+        <p>${p.header.detail}</p>
+      </div>
+    </div>
+  `;
+
+  /* ABOUT */
+  aboutTitle.innerText = p.about.name;
+  aboutSubtitle.innerText = p.about.subtitle;
+  aboutImg.src = `/uploads/${p.about.image}`;
+  aboutImg.onerror = function(){ this.src='https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80'; }
+  aboutHeading.innerText = p.about.heading;
+  aboutDetails.innerText = p.about.details;
+
+  /* MISSION */
+  const mission = p.mission || {};
+  missionTitle.innerText = mission.title || 'Mission';
+  missionSubtitle.innerText = mission.description || '';
+  missionCards.innerHTML = '';
+  if (Array.isArray(mission.points)) {
+    missionCards.innerHTML = mission.points
+      .filter(Boolean)
+      .map(pt => {
+        if (typeof pt === 'string') {
+          return `
+            <div class="mission-card">
+              <h4>${pt}</h4>
+            </div>
+          `;
+        } else {
+          const t = pt.title || '';
+          const d = pt.description || '';
+          return `
+            <div class="mission-card">
+              ${t ? `<h4>${t}</h4>` : ''}
+              ${d ? `<p>${d}</p>` : ''}
+            </div>
+          `;
+        }
+      }).join('');
+  }
+
+  const core = p.core || {};
+  coreTitle.innerText = core.name || 'Core Values';
+  coreSubtitle.innerText = core.subtitle || '';
+  coreCards.innerHTML = '';
+  if (Array.isArray(core.cards)) {
+    core.cards.forEach(c=>{
+      coreCards.innerHTML += `
+        <div class="core-card">
+          ${c.icon ? `<img src="/uploads/${c.icon}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1055/1055687.png'">` : ''}
+          <h4>${c.heading || ''}</h4>
+          <p>${c.details || ''}</p>
+        </div>
+      `;
+    });
+  }
+
+  /* WHY US */
+  whyTitle.innerText = p.why_us.name;
+  whySubtitle.innerText = p.why_us.subtitle;
+  whyImg.src = `/uploads/${p.why_us.image}`;
+  whyImg.onerror = function(){ this.src='https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80'; };
+
+  whyFeatures.innerHTML = '';
+  p.why_us.features.forEach(f=>{
+    whyFeatures.innerHTML += `<li>${f}</li>`;
+  });
+
+  /* VISION */
+  if (p.vision) {
+    const v = p.vision;
+    const vName = v.name || v.title || 'Vision';
+    const vSubtitle = v.subtitle || '';
+    const vDetails = v.details || v.description || '';
+    visionTitle.innerText = vName;
+    visionSubtitle.innerText = vSubtitle;
+    visionDetails.innerText = vDetails;
+    if (Array.isArray(v.points)) {
+      visionPoints.innerHTML = v.points
+        .filter(Boolean)
+        .map(pt => {
+          if (typeof pt === 'string') {
+            return `<li>${pt}</li>`;
+          } else {
+            const t = pt.title || '';
+            const d = pt.description || '';
+            return `<li>${t ? `<strong>${t}</strong>` : ''}${d ? `<p>${d}</p>` : ''}</li>`;
+          }
+        }).join('');
+    }
+  }
+  
+  /* FOOTER */
+  const f = data.pages?.footer || {};
+  footerBrand.innerText = f.brand || '';
+  footerTagline.innerText = f.tagline || '';
+  footerDesc.innerText = f.description || '';
+  const socials = f.social || {};
+  footerSocials.innerHTML = '';
+  ['facebook','instagram','twitter','youtube'].forEach(k=>{
+    if(socials[k]){
+      const a = document.createElement('a');
+      a.href = socials[k];
+      a.textContent = k;
+      a.target = '_blank';
+      footerSocials.appendChild(a);
+    }
+  });
+  const quick = f.quickLinks || [];
+  const routes = ['/home','/about','/services','/contact'];
+  footerQuick.innerHTML = quick.map((t,i)=>`<li><a href="${routes[i]||'#'}">${t}</a></li>`).join('');
+  const cats = f.categories || [];
+  footerCats.innerHTML = cats.map(c=>`<li><a href="#">${c}</a></li>`).join('');
+  footerAddress.innerText = f.contact?.address || '';
+  footerPhone.innerText = f.contact?.phone || '';
+  footerEmail.innerText = f.contact?.email || '';
+  footerHours.innerText = f.contact?.hours || '';
+  footerYear.innerText = new Date().getFullYear();
+  footerBrandLine.innerText = f.brand || '';
+});
+</script>
+
+</body>
+</html>
