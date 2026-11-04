@@ -484,7 +484,8 @@
 
 <div class="form-group">
       <label>Google Map Embed URL</label>
-      <textarea id="mapUrl" name="mapUrl" placeholder="Paste iframe src URL here"></textarea>
+      <textarea id="mapUrl" name="mapUrl" placeholder="Paste Google Map embed code (<iframe...>) or embed URL here" oninput="if(this.value.includes('src=')){ const m = this.value.match(/src=[&quot;']([^&quot;']+)[\&quot;']/i); if(m) this.value = m[1]; }"></textarea>
+      <small style="color:#64748b; font-size:12px; display:block; margin-top:4px;">You can paste either the full &lt;iframe&gt; code or direct embed URL from Google Maps</small>
     </div>
 
     <br><br>

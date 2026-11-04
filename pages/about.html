@@ -342,8 +342,10 @@ section {
 
 .mission-box {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 28px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 860px;
+  margin: 0 auto;
 }
 
 .mission-card {
@@ -354,6 +356,11 @@ section {
   box-shadow: var(--shadow-md);
   text-align: center;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 140px;
 }
 
 .mission-card:hover {
@@ -392,8 +399,10 @@ section {
 .vision-points {
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 26px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 860px;
+  margin: 0 auto;
   padding: 0;
 }
 
@@ -404,6 +413,10 @@ section {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 140px;
 }
 
 .vision-points li:hover {
@@ -423,6 +436,152 @@ section {
 .vision-points li p {
   color: var(--slate-600);
   font-size: 14px;
+  margin: 0;
+}
+
+/* ================= MODERN BADGES ================= */
+.section-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 5px 14px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(79, 70, 229, 0.2);
+}
+
+/* ================= ABOUT METRICS STRIP ================= */
+.about-metrics-strip {
+  background: #ffffff;
+  border-bottom: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-sm);
+  padding: 30px 20px;
+}
+
+.about-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.about-metric-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  transition: all 0.25s ease;
+}
+
+.about-metric-card:hover {
+  background: #ffffff;
+  border-color: #c7d2fe;
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.about-metric-icon {
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.about-metric-num {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--dark);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.about-metric-title {
+  font-size: 13px;
+  color: var(--slate-600);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* ================= BRAND PLEDGE BANNER ================= */
+.pledge-section {
+  padding: 80px 0;
+  background: #ffffff;
+  border-top: 1px solid var(--slate-200);
+}
+
+.pledge-card {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: var(--radius-lg);
+  padding: 50px 40px;
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: var(--shadow-lg);
+}
+
+.pledge-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 40px;
+}
+
+.pledge-header h2 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.pledge-header p {
+  color: #cbd5e1;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.pledge-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.pledge-feat {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 24px 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.pledge-feat:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(99, 102, 241, 0.4);
+  transform: translateY(-3px);
+}
+
+.pledge-icon {
+  font-size: 28px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.pledge-feat h4 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.pledge-feat p {
+  font-size: 13.5px;
+  color: #94a3b8;
+  line-height: 1.6;
   margin: 0;
 }
 
@@ -580,6 +739,22 @@ section {
   section {
     padding: 55px 0;
   }
+  .about-metrics-grid { grid-template-columns: 1fr 1fr; }
+  .pledge-features-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .about-metrics-grid { grid-template-columns: 1fr; }
+  .mission-box,
+  .vision-points,
+  .core-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .about img, .why-us img {
+    max-width: 100%;
+    height: auto;
+  }
 }
 </style>
 </head>
@@ -596,10 +771,47 @@ section {
 <!-- HERO -->
 <header id="hero"></header>
 
+<!-- ABOUT METRICS STRIP -->
+<div class="about-metrics-strip">
+  <div class="container">
+    <div class="about-metrics-grid">
+      <div class="about-metric-card">
+        <span class="about-metric-icon">🏆</span>
+        <div>
+          <div class="about-metric-num">5+ Years</div>
+          <div class="about-metric-title">Industry Leadership</div>
+        </div>
+      </div>
+      <div class="about-metric-card">
+        <span class="about-metric-icon">📦</span>
+        <div>
+          <div class="about-metric-num">100,000+</div>
+          <div class="about-metric-title">Orders Delivered</div>
+        </div>
+      </div>
+      <div class="about-metric-card">
+        <span class="about-metric-icon">🤝</span>
+        <div>
+          <div class="about-metric-num">99.5%</div>
+          <div class="about-metric-title">Customer Satisfaction</div>
+        </div>
+      </div>
+      <div class="about-metric-card">
+        <span class="about-metric-icon">⚡</span>
+        <div>
+          <div class="about-metric-num">24 / 7</div>
+          <div class="about-metric-title">Dedicated Support</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ABOUT -->
 <section>
   <div class="container">
     <div class="section-title">
+      <div style="text-align:center;"><span class="section-badge-pill">📖 Our Background</span></div>
       <h2 id="aboutTitle"></h2>
       <p id="aboutSubtitle"></p>
     </div>
@@ -620,6 +832,7 @@ section {
 <section class="core">
   <div class="container">
     <div class="section-title">
+      <div style="text-align:center;"><span class="section-badge-pill">💎 Core Principles</span></div>
       <h2 id="coreTitle"></h2>
       <p id="coreSubtitle"></p>
     </div>
@@ -631,6 +844,7 @@ section {
 <section>
   <div class="container">
     <div class="section-title">
+      <div style="text-align:center;"><span class="section-badge-pill">✨ The Dynamic Advantage</span></div>
       <h2 id="whyTitle"></h2>
       <p id="whySubtitle"></p>
     </div>
@@ -646,6 +860,7 @@ section {
 <section class="mission">
   <div class="container">
     <div class="section-title">
+      <div style="text-align:center;"><span class="section-badge-pill">🎯 Purpose & Trajectory</span></div>
       <h2 id="missionTitle"></h2>
       <p id="missionSubtitle"></p>
     </div>
@@ -657,6 +872,7 @@ section {
 <section class="vision">
   <div class="container">
     <div class="section-title">
+      <div style="text-align:center;"><span class="section-badge-pill">🔭 Looking Ahead</span></div>
       <h2 id="visionTitle"></h2>
       <p id="visionSubtitle"></p>
     </div>
@@ -664,6 +880,36 @@ section {
       <div>
         <p id="visionDetails" class="vision-details"></p>
         <ul id="visionPoints" class="vision-points"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRAND QUALITY PLEDGE BANNER -->
+<section class="pledge-section">
+  <div class="container">
+    <div class="pledge-card">
+      <div class="pledge-header">
+        <div style="display:inline-block; margin-bottom:12px;"><span class="section-badge-pill" style="background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.3);">🤝 Our Quality Commitment</span></div>
+        <h2>Built On Trust, Powered By Excellence</h2>
+        <p>We believe every shopping experience should inspire confidence. From sourcing to packaging and final mile doorstep delivery, we never compromise on quality.</p>
+      </div>
+      <div class="pledge-features-grid">
+        <div class="pledge-feat">
+          <span class="pledge-icon">🔒</span>
+          <h4>100% Encrypted & Safe</h4>
+          <p>All transactions, payment exchanges, and customer data follow strict security standards.</p>
+        </div>
+        <div class="pledge-feat">
+          <span class="pledge-icon">🏅</span>
+          <h4>Strict Quality Vetting</h4>
+          <p>Every single product in our catalog undergoes thorough multi-point authenticity checks.</p>
+        </div>
+        <div class="pledge-feat">
+          <span class="pledge-icon">🚀</span>
+          <h4>Swift Priority Dispatch</h4>
+          <p>Carefully packed orders dispatched quickly so your packages arrive safely and on time.</p>
+        </div>
       </div>
     </div>
   </div>

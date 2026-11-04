@@ -160,20 +160,21 @@ header::after {
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 26px;
+  gap: 28px;
 }
 
-/* ================= PRODUCT CARD ================= */
+/* ================= PRODUCT CARD ALIGNMENT ================= */
 .product-card {
   background: #fff;
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--slate-200);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .product-card:hover {
@@ -209,11 +210,13 @@ header::after {
 
 .product-img {
   height: 220px;
-  background: #f1f5f9;
+  background: #f8fafc;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  position: relative;
+  border-bottom: 1px solid var(--slate-100);
 }
 
 .product-img img {
@@ -228,7 +231,7 @@ header::after {
 }
 
 .details {
-  padding: 20px;
+  padding: 22px;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -239,6 +242,8 @@ header::after {
   font-weight: 700;
   margin-bottom: 6px;
   color: var(--dark);
+  line-height: 1.35;
+  min-height: 24px;
 }
 
 .meta-row {
@@ -246,6 +251,8 @@ header::after {
   flex-wrap: wrap;
   gap: 6px;
   margin-bottom: 10px;
+  min-height: 26px;
+  align-items: center;
 }
 
 .category-badge {
@@ -255,6 +262,7 @@ header::after {
   padding: 4px 10px;
   border-radius: 999px;
   font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .sub-badge {
@@ -267,31 +275,41 @@ header::after {
 }
 
 .details p {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--slate-600);
-  line-height: 1.5;
-  margin-bottom: 12px;
+  line-height: 1.55;
+  margin-bottom: 16px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  min-height: 42px;
+}
+
+/* Bottom aligned block across all cards */
+.card-bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--slate-200);
 }
 
 .price {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 8px;
-  margin-bottom: 8px;
 }
 
 .new-price {
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 800;
   color: #10b981;
 }
 
 .old-price {
-  font-size: 13px;
+  font-size: 13.5px;
   text-decoration: line-through;
   color: var(--slate-400);
 }
@@ -299,53 +317,227 @@ header::after {
 .discount {
   background: #fee2e2;
   color: #dc2626;
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 700;
-  padding: 3px 6px;
+  padding: 2px 7px;
   border-radius: 4px;
 }
 
-.delivery {
-  font-size: 13px;
+.delivery-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12.5px;
   color: var(--slate-600);
-  margin-bottom: 4px;
 }
 
-.charge {
-  font-size: 12px;
-  color: var(--slate-400);
-  margin-bottom: 12px;
+.delivery-info .delivery {
+  margin-bottom: 0;
+}
+
+.delivery-info .charge {
+  margin-bottom: 0;
+}
+
+.stock-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .stock-badge {
-  align-self: flex-start;
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 700;
   padding: 4px 10px;
   border-radius: 999px;
-  margin-bottom: 16px;
+  display: inline-block;
+  margin-bottom: 0;
 }
 
 .stock-in { background: #dcfce7; color: #166534; }
 .stock-out { background: #fee2e2; color: #991b1b; }
 
-.add-cart {
-  margin-top: auto;
-  width: 100%;
-  padding: 12px;
-  background: var(--dark);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-sm);
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.25s ease;
+/* ================= CATALOG SEARCH & FILTERS TOOLBAR ================= */
+.catalog-toolbar {
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 18px 24px;
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.add-cart:hover {
+.search-box-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 16px;
+  color: var(--slate-400);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 42px 12px 42px;
+  background: var(--slate-100);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  color: var(--dark);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  background: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  color: var(--slate-400);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+.clear-search-btn:hover {
+  color: var(--dark);
+}
+
+.filter-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--slate-600);
+}
+
+.filter-select {
+  padding: 8px 12px;
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--dark);
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-select:focus {
+  border-color: var(--primary);
+}
+
+.btn-reset-filters {
+  padding: 8px 14px;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: auto;
+}
+
+.btn-reset-filters:hover {
+  background: #fecaca;
+}
+
+.category-pills-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.cat-pill {
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  color: var(--slate-700);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.cat-pill:hover {
+  background: var(--slate-100);
+  border-color: var(--slate-300);
+  color: var(--dark);
+}
+
+.cat-pill.active {
   background: var(--primary);
-  transform: translateY(-2px);
+  color: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+}
+
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: var(--slate-600);
+}
+
+.results-count {
+  font-weight: 600;
+}
+
+.active-filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #e0e7ff;
+  color: #4338ca;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.active-filter-tag button {
+  background: transparent;
+  border: none;
+  color: #4338ca;
+  font-weight: 800;
+  cursor: pointer;
+  font-size: 13px;
 }
 
 /* ================= DELIVERY SECTION ================= */
@@ -808,7 +1000,61 @@ header::after {
 <!-- PRODUCTS -->
 <section class="product-section">
   <div class="container">
-    <h2 class="category-title">All Products & Catalog</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
+      <h2 class="category-title" style="margin-bottom:0;">All Products & Catalog</h2>
+    </div>
+
+    <!-- SEARCH & FILTER TOOLBAR -->
+    <div class="catalog-toolbar">
+      <div class="search-box-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="productSearchInput" class="search-input" placeholder="Search products by title, category, or keyword..." oninput="handleSearchFilter()">
+        <button id="clearSearchBtn" class="clear-search-btn" onclick="clearSearch()" style="display:none;" title="Clear search">✕</button>
+      </div>
+
+      <div class="filter-controls">
+        <div class="filter-group">
+          <label for="sortFilter">Sort By:</label>
+          <select id="sortFilter" class="filter-select" onchange="handleSearchFilter()">
+            <option value="default">Default</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="name-asc">Name: A to Z</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="stockFilter">Availability:</label>
+          <select id="stockFilter" class="filter-select" onchange="handleSearchFilter()">
+            <option value="all">All Items</option>
+            <option value="in">In Stock Only</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="ribbonFilter">Offer / Deal:</label>
+          <select id="ribbonFilter" class="filter-select" onchange="handleSearchFilter()">
+            <option value="all">All Offers</option>
+          </select>
+        </div>
+
+        <button id="resetFiltersBtn" class="btn-reset-filters" onclick="resetAllFilters()" style="display:none;">
+          ↺ Reset Filters
+        </button>
+      </div>
+    </div>
+
+    <!-- CATEGORY PILLS BAR -->
+    <div class="category-pills-bar" id="categoryPillsBar">
+      <button class="cat-pill active" onclick="setCategoryFilter('all')">All Products</button>
+    </div>
+
+    <!-- RESULTS HEADER & ACTIVE FILTER NOTICE -->
+    <div class="results-header">
+      <span id="resultsCount" class="results-count">Loading catalog...</span>
+      <div id="activeFilterTag" class="active-filter-tag" style="display:none;"></div>
+    </div>
+
     <div id="product-grid" class="product-grid"></div>
   </div>
 </section>
@@ -981,75 +1227,296 @@ fetch('/api/pages')
   }
 });
 
-/* LOAD PRODUCTS */
+/* ================= PRODUCT CATALOG, SEARCH & FILTERS ================= */
 window.productCache = window.productCache || {};
+let allProducts = [];
+let currentCategoryFilter = 'all';
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
 
 async function loadProducts(){
   try {
     const res = await fetch('/products');
-    const products = await res.json();
-    const container = document.getElementById('product-grid'); 
-    container.innerHTML = '';
+    allProducts = await res.json();
 
-    if (!products.length) {
-      container.innerHTML = '<p style="text-align:center; grid-column:1/-1; padding:40px; color:#64748b;">No products available right now.</p>';
-      return;
+    // Check URL parameters for category filter (e.g. /services?category=electronics)
+    const urlParams = new URLSearchParams(window.location.search);
+    const catFromUrl = urlParams.get('category');
+    if (catFromUrl) {
+      currentCategoryFilter = catFromUrl.trim();
     }
 
-    products.forEach(p => {
-      const pId = p._id || ('srv_' + Math.random().toString(36).substr(2, 9));
-      p._id = pId;
-      window.productCache[pId] = p;
+    buildCategoryPills();
+    buildRibbonFilter();
+    handleSearchFilter();
+  } catch(e) {
+    console.error('Failed to load products', e);
+    document.getElementById('product-grid').innerHTML = '<p style="text-align:center; grid-column:1/-1; padding:40px; color:#ef4444;">Failed to load catalog. Please refresh the page.</p>';
+  }
+}
 
-      const ribbonClass =
-        p.ribbon === 'Trending' ? 'trending' :
-        p.ribbon === 'New Arrival' ? 'new' :
-        p.ribbon === 'Sale' ? 'sale' :
-        p.ribbon === 'Hot' ? 'hot' :
-        p.ribbon === 'Featured' ? 'featured' :
-        p.ribbon === 'Limited' ? 'limited' :
-        p.ribbon === 'Best' ? 'best' :
-        p.ribbon === 'Offer' ? 'offer' : '';
+// Build category pills dynamically from products and category view
+async function buildCategoryPills() {
+  const container = document.getElementById('categoryPillsBar');
+  if (!container) return;
 
-      let image = p.image ? p.image.split(/[\\/]/).pop() : '';
+  const categoriesSet = new Set();
+  
+  // Collect from products
+  allProducts.forEach(p => {
+    if (Array.isArray(p.category)) {
+      p.category.forEach(c => {
+        if (c && String(c).trim() && String(c).toLowerCase() !== 'null' && String(c).toLowerCase() !== 'undefined') {
+          categoriesSet.add(String(c).trim());
+        }
+      });
+    } else if (p.category && String(p.category).trim() && String(p.category).toLowerCase() !== 'null' && String(p.category).toLowerCase() !== 'undefined') {
+      categoriesSet.add(String(p.category).trim());
+    }
+  });
 
-      const subCats = Array.isArray(p.subCategory)
-        ? p.subCategory.map(sc => `<span class="sub-badge">${sc}</span>`).join('')
-        : '';
+  // Also fetch existing categories from /categories-view so all registered categories show up
+  try {
+    const catRes = await fetch('/categories-view');
+    const catList = await catRes.json();
+    if (Array.isArray(catList)) {
+      catList.forEach(c => {
+        if (c && c.category && c.category.trim() && c.category.toLowerCase() !== 'null') {
+          categoriesSet.add(c.category.trim());
+        }
+      });
+    }
+  } catch(e) {}
 
-      const catBadge = Array.isArray(p.category) ? p.category.join(', ') : (p.category || '');
+  const sortedCategories = Array.from(categoriesSet).sort((a, b) => a.localeCompare(b));
 
-      container.innerHTML += `
-        <div class="product-card">
-          ${p.ribbon ? `<div class="ribbon ${ribbonClass}">${p.ribbon}</div>` : ''}
-          <div class="product-img">
-            <img src="/uploads/${image}" onerror="this.src='https://via.placeholder.com/260x220?text=Product'" alt="${p.name}">
+  let html = `<button class="cat-pill ${currentCategoryFilter === 'all' ? 'active' : ''}" onclick="setCategoryFilter('all')">All Products</button>`;
+  sortedCategories.forEach(c => {
+    const isActive = currentCategoryFilter.toLowerCase() === c.toLowerCase();
+    html += `<button class="cat-pill ${isActive ? 'active' : ''}" onclick="setCategoryFilter('${escapeHtml(c)}')">${escapeHtml(c)}</button>`;
+  });
+
+  container.innerHTML = html;
+}
+
+// Build ribbon filter options dynamically
+function buildRibbonFilter() {
+  const select = document.getElementById('ribbonFilter');
+  if (!select) return;
+
+  const ribbonsSet = new Set();
+  allProducts.forEach(p => {
+    if (p.ribbon && String(p.ribbon).trim() && String(p.ribbon).toLowerCase() !== 'null') {
+      ribbonsSet.add(String(p.ribbon).trim());
+    }
+  });
+
+  let optionsHtml = '<option value="all">All Offers</option>';
+  ribbonsSet.forEach(r => {
+    optionsHtml += `<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`;
+  });
+  select.innerHTML = optionsHtml;
+}
+
+function setCategoryFilter(category) {
+  currentCategoryFilter = category;
+
+  // Update active pill UI
+  document.querySelectorAll('.cat-pill').forEach(pill => {
+    if (category === 'all') {
+      pill.classList.toggle('active', pill.innerText.trim() === 'All Products');
+    } else {
+      pill.classList.toggle('active', pill.innerText.trim().toLowerCase() === category.toLowerCase());
+    }
+  });
+
+  // Update URL without page reload
+  const newUrl = category === 'all' ? window.location.pathname : window.location.pathname + '?category=' + encodeURIComponent(category);
+  window.history.replaceState({}, '', newUrl);
+
+  handleSearchFilter();
+}
+
+function clearSearch() {
+  document.getElementById('productSearchInput').value = '';
+  document.getElementById('clearSearchBtn').style.display = 'none';
+  handleSearchFilter();
+}
+
+function resetAllFilters() {
+  document.getElementById('productSearchInput').value = '';
+  document.getElementById('clearSearchBtn').style.display = 'none';
+  document.getElementById('sortFilter').value = 'default';
+  document.getElementById('stockFilter').value = 'all';
+  document.getElementById('ribbonFilter').value = 'all';
+  setCategoryFilter('all');
+}
+
+function handleSearchFilter() {
+  const searchInput = document.getElementById('productSearchInput');
+  const searchTerm = (searchInput ? searchInput.value : '').trim().toLowerCase();
+  const clearBtn = document.getElementById('clearSearchBtn');
+  if (clearBtn) clearBtn.style.display = searchTerm ? 'block' : 'none';
+
+  const sortBy = document.getElementById('sortFilter') ? document.getElementById('sortFilter').value : 'default';
+  const stockVal = document.getElementById('stockFilter') ? document.getElementById('stockFilter').value : 'all';
+  const ribbonVal = document.getElementById('ribbonFilter') ? document.getElementById('ribbonFilter').value : 'all';
+
+  // 1. Filter
+  let filtered = allProducts.filter(p => {
+    // Category match
+    if (currentCategoryFilter !== 'all') {
+      const pCats = (Array.isArray(p.category) ? p.category : [p.category]).map(c => String(c || '').trim().toLowerCase());
+      const pSubCats = (Array.isArray(p.subCategory) ? p.subCategory : [p.subCategory]).map(sc => String(sc || '').trim().toLowerCase());
+      const filterLower = currentCategoryFilter.toLowerCase();
+      const matchCat = pCats.some(c => c === filterLower || c.includes(filterLower));
+      const matchSub = pSubCats.some(sc => sc === filterLower || sc.includes(filterLower));
+      if (!matchCat && !matchSub) return false;
+    }
+
+    // Ribbon match
+    if (ribbonVal !== 'all') {
+      if ((p.ribbon || '').toLowerCase() !== ribbonVal.toLowerCase()) return false;
+    }
+
+    // Stock match
+    if (stockVal === 'in') {
+      if (p.stock === 'out') return false;
+    }
+
+    // Search match
+    if (searchTerm) {
+      const pName = (p.name || '').toLowerCase();
+      const pDesc = (p.description || '').toLowerCase();
+      const pCats = (Array.isArray(p.category) ? p.category.join(' ') : (p.category || '')).toLowerCase();
+      const pSubCats = (Array.isArray(p.subCategory) ? p.subCategory : [p.subCategory]).map(sc => String(sc || '').trim().toLowerCase());
+      const pRibbon = (p.ribbon || '').toLowerCase();
+      if (!pName.includes(searchTerm) && !pDesc.includes(searchTerm) && !pCats.includes(searchTerm) && !pSubCats.includes(searchTerm) && !pRibbon.includes(searchTerm)) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
+  // 2. Sort
+  if (sortBy === 'price-asc') {
+    filtered.sort((a, b) => Number(a.price) - Number(b.price));
+  } else if (sortBy === 'price-desc') {
+    filtered.sort((a, b) => Number(b.price) - Number(a.price));
+  } else if (sortBy === 'name-asc') {
+    filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+  }
+
+  // 3. Update Result Header & Active Tag
+  const countSpan = document.getElementById('resultsCount');
+  if (countSpan) {
+    countSpan.innerText = `Showing ${filtered.length} of ${allProducts.length} products`;
+  }
+
+  const activeTag = document.getElementById('activeFilterTag');
+  if (activeTag) {
+    if (currentCategoryFilter !== 'all') {
+      activeTag.innerHTML = `Category: <strong>${escapeHtml(currentCategoryFilter)}</strong> <button onclick="setCategoryFilter('all')" title="Remove category filter">✕</button>`;
+      activeTag.style.display = 'inline-flex';
+    } else {
+      activeTag.style.display = 'none';
+    }
+  }
+
+  const resetBtn = document.getElementById('resetFiltersBtn');
+  if (resetBtn) {
+    const isFiltered = currentCategoryFilter !== 'all' || searchTerm || sortBy !== 'default' || stockVal !== 'all' || ribbonVal !== 'all';
+    resetBtn.style.display = isFiltered ? 'inline-block' : 'none';
+  }
+
+  // 4. Render Grid with Aligned Product Cards
+  const container = document.getElementById('product-grid');
+  if (!container) return;
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #ffffff; border-radius: var(--radius-md); border: 1px dashed var(--slate-200);">
+        <span style="font-size: 42px; display: block; margin-bottom: 12px;">🔍</span>
+        <h3 style="font-size: 18px; font-weight: 700; color: var(--dark); margin-bottom: 6px;">No products found</h3>
+        <p style="color: var(--slate-500); font-size: 14px; margin-bottom: 18px;">We couldn't find any products matching your search or filter selection.</p>
+        <button onclick="resetAllFilters()" style="background:var(--primary); color:#fff; border:none; padding:10px 20px; border-radius:var(--radius-sm); font-weight:700; font-size:13px; cursor:pointer;">
+          ↺ Clear All Filters
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map(p => {
+    const pId = p._id || ('srv_' + Math.random().toString(36).substr(2, 9));
+    p._id = pId;
+    window.productCache[pId] = p;
+
+    const ribbonClass =
+      p.ribbon === 'Trending' ? 'trending' :
+      p.ribbon === 'New Arrival' ? 'new' :
+      p.ribbon === 'Sale' ? 'sale' :
+      p.ribbon === 'Hot' ? 'hot' :
+      p.ribbon === 'Featured' ? 'featured' :
+      p.ribbon === 'Limited' ? 'limited' :
+      p.ribbon === 'Best' ? 'best' :
+      p.ribbon === 'Offer' ? 'offer' : '';
+
+    let image = p.image ? p.image.split(/[\\/]/).pop() : '';
+
+    // Clean category badges (eliminate null/undefined)
+    const validCats = (Array.isArray(p.category) ? p.category : [p.category])
+      .filter(c => c && String(c).trim() !== '' && String(c).toLowerCase() !== 'null' && String(c).toLowerCase() !== 'undefined');
+    const catBadge = validCats.length ? `<span class="category-badge">${escapeHtml(validCats.join(', '))}</span>` : '';
+
+    // Clean subcategory badges (eliminate null/undefined)
+    const validSubCats = (Array.isArray(p.subCategory) ? p.subCategory : [p.subCategory])
+      .filter(sc => sc && String(sc).trim() !== '' && String(sc).toLowerCase() !== 'null' && String(sc).toLowerCase() !== 'undefined');
+    const subCats = validSubCats.map(sc => `<span class="sub-badge">${escapeHtml(sc)}</span>`).join('');
+
+    const isOut = p.stock === 'out';
+
+    return `
+      <div class="product-card">
+        ${p.ribbon ? `<div class="ribbon ${ribbonClass}">${escapeHtml(p.ribbon)}</div>` : ''}
+        <div class="product-img">
+          <img src="/uploads/${image}" onerror="this.src='https://via.placeholder.com/260x220?text=Product'" alt="${escapeHtml(p.name)}">
+        </div>
+        <div class="details">
+          <h3>${escapeHtml(p.name)}</h3>
+          <div class="meta-row">
+            ${catBadge}
+            ${subCats}
           </div>
-          <div class="details">
-            <h3>${p.name}</h3>
-            <div class="meta-row">
-              ${catBadge ? `<span class="category-badge">${catBadge}</span>` : ''}
-              ${subCats}
-            </div>
-            <p>${p.description || ''}</p>
+          <p title="${escapeHtml(p.description || '')}">${escapeHtml(p.description || 'Quality product with fast delivery and warranty support.')}</p>
+          
+          <div class="card-bottom">
             <div class="price">
               <span class="new-price">₹${p.price}</span>
               ${p.oldPrice ? `<span class="old-price">₹${p.oldPrice}</span>` : ''}
               ${p.discount ? `<span class="discount">${p.discount}% OFF</span>` : ''}
             </div>
-            <div class="delivery">🚚 ${p.delivery || 'Standard Delivery'}</div>
-            <div class="charge">💸 Delivery Charge: ₹${p.deliveryCharge || 0}</div>
-            <div class="stock-badge ${p.stock==='out' ? 'stock-out' : 'stock-in'}">
-              ${p.stock==='out' ? 'Out of Stock' : 'In Stock'}
+            <div class="delivery-info">
+              <div class="delivery">🚚 ${escapeHtml(p.delivery || 'Standard Delivery')}</div>
+              <div class="charge">💸 Delivery Charge: ₹${p.deliveryCharge || 0}</div>
             </div>
-            <button class="buy-now-btn" onclick="openCheckoutModal('${pId}')">⚡ Buy Now</button>
+            <div class="stock-row">
+              <div class="stock-badge ${isOut ? 'stock-out' : 'stock-in'}">
+                ${isOut ? 'Out of Stock' : 'In Stock'}
+              </div>
+            </div>
+            <button class="buy-now-btn" onclick="openCheckoutModal('${pId}')" ${isOut ? 'disabled title="Currently Out of Stock"' : ''}>
+              ⚡ Buy Now
+            </button>
           </div>
         </div>
-      `;
-    });
-  } catch(e) {
-    console.error('Failed to load products', e);
-  }
+      </div>
+    `;
+  }).join('');
 }
 
 window.addEventListener('DOMContentLoaded', loadProducts);

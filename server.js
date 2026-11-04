@@ -27,27 +27,157 @@ app.use('/css', express.static(path.join(__dirname, 'access/css')));
 app.use('/access', express.static(path.join(__dirname, 'access')));
 
 
-/* ================== MONGODB ================== */
-let mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/dynosite';
+/* ================== MONGODB (ONLINE DATABASE) ================== */
+let mongoUri = process.env.MONGO_URI || process.env.MONGODB_URI;
 if (fs.existsSync(path.join(__dirname, '.env'))) {
     try {
         const envText = fs.readFileSync(path.join(__dirname, '.env'), 'utf8');
-        const match = envText.match(/^\s*MONGODB_URI\s*=\s*([^\r\n]+)/m);
+        const match = envText.match(/^\s*(?:MONGO_URI|MONGODB_URI)\s*=\s*([^\r\n]+)/m);
         if (match && match[1]) mongoUri = match[1].trim();
     } catch {}
 }
 
 mongoose.connect(mongoUri)
-    .then(() => console.log('MongoDB Connected successfully to:', mongoUri.includes('@') ? 'MongoDB Atlas (Online)' : mongoUri))
-    .catch(err => {
-        console.error('Primary MongoDB connection failed:', err.message);
-        if (mongoUri !== 'mongodb://localhost:27017/dynosite') {
-            console.log('Attempting local fallback (mongodb://localhost:27017/dynosite)...');
-            mongoose.connect('mongodb://localhost:27017/dynosite')
-                .then(() => console.log('MongoDB Connected to local fallback'))
-                .catch(e => console.error('Local fallback failed:', e.message));
-        }
-    });
+    .then(() => console.log('✅ MongoDB Online Database Connected successfully'))
+    .catch(err => console.error('MongoDB connection error:', err.message));
+
+function sanitizeMapUrl(raw) {
+    if (!raw || typeof raw !== 'string') return '';
+    let str = raw.trim();
+    if (str.includes('%3C') || str.includes('%3c')) {
+        try { str = decodeURIComponent(str); } catch (e) {}
+    }
+    const srcMatch = str.match(/src=["']([^"']+)["']/i);
+    if (srcMatch && srcMatch[1]) {
+        str = srcMatch[1].trim();
+    }
+    return str.replace(/^["']|["']$/g, '').trim();
+}
+
+function escapeRegex(str) {
+    if (!str || typeof str !== 'string') return '';
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function sendAuthError(res, redirectUrl, message) {
+    const safeMsg = String(message || 'An error occurred').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    return res.status(400).send(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Authentication Notice • Dynamic Store</title>
+<style>
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: #0b0f19; font-family: system-ui, -apple-system, sans-serif; color: #fff; padding: 24px;
+    background-image: radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.25) 0px, transparent 50%),
+                      radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.2) 0px, transparent 50%);
+  }
+  .card {
+    background: #1e293b; border: 1px solid #334155; border-radius: 20px; padding: 36px 30px; max-width: 440px; width: 100%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+  .icon { font-size: 44px; margin-bottom: 14px; }
+  h2 { font-size: 20px; font-weight: 700; margin-bottom: 10px; color: #f87171; letter-spacing: -0.01em; }
+  p { font-size: 14.5px; color: #cbd5e1; line-height: 1.55; margin-bottom: 24px; }
+  .btn {
+    display: inline-block; background: #4f46e5; color: #fff; text-decoration: none; padding: 12px 26px; border-radius: 10px; font-weight: 600; font-size: 14px; transition: all 0.2s;
+  }
+  .btn:hover { background: #4338ca; transform: translateY(-1px); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">⚠️</div>
+    <h2>Authentication Notice</h2>
+    <p>${safeMsg}</p>
+    <a href="${redirectUrl}" class="btn">Return to Sign In</a>
+  </div>
+  <script>
+    setTimeout(function() {
+      window.location.href = "${redirectUrl}";
+    }, 2800);
+  </script>
+</body>
+</html>`);
+}
+
+function sendAuthSuccess(res, account, role) {
+    const redirectUrl = (role === 'admin') ? '/controls' : '/home';
+    const destinationLabel = (role === 'admin') ? 'Admin Control Hub' : 'Storefront';
+    const safeName = String(account.username || 'User').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    
+    const userPayload = {
+        id: String(account._id),
+        username: account.username,
+        email: account.email,
+        phone: account.phone || '',
+        address: account.address || '',
+        city: account.city || '',
+        state: account.state || '',
+        pincode: account.pincode || '',
+        role: role
+    };
+
+    res.setHeader('Set-Cookie', [
+        `userEmail=${encodeURIComponent(account.email)}; Path=/; Max-Age=2592000; SameSite=Lax`,
+        `userRole=${role}; Path=/; Max-Age=2592000; SameSite=Lax`,
+        `userName=${encodeURIComponent(account.username)}; Path=/; Max-Age=2592000; SameSite=Lax`
+    ]);
+
+    const payloadJsonStr = JSON.stringify(userPayload).replace(/</g, '\\u003c').replace(/'/g, "\\'");
+
+    return res.send(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signing In • Dynamic Store</title>
+<style>
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: #0b0f19; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #fff; padding: 24px;
+    background-image: radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.25) 0px, transparent 50%),
+                      radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.2) 0px, transparent 50%);
+  }
+  .card {
+    background: #1e293b; border: 1px solid #334155; border-radius: 20px; padding: 40px 32px; max-width: 420px; width: 100%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+  .spinner {
+    width: 48px; height: 48px; border: 4px solid rgba(99, 102, 241, 0.25); border-top-color: #6366f1; border-radius: 50%;
+    animation: spin 0.8s linear infinite; margin: 0 auto 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; color: #fff; letter-spacing: -0.01em; }
+  p { font-size: 14px; color: #94a3b8; line-height: 1.5; margin-bottom: 22px; }
+  .btn {
+    display: inline-block; background: #4f46e5; color: #fff; text-decoration: none; padding: 10px 22px; border-radius: 8px; font-weight: 600; font-size: 13.5px; transition: background 0.2s;
+  }
+  .btn:hover { background: #4338ca; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="spinner"></div>
+    <h2>Welcome back, ${safeName}!</h2>
+    <p>Signing in as <strong>${role === 'admin' ? 'Administrator' : 'Customer'}</strong>. Redirecting to ${destinationLabel}...</p>
+    <a href="${redirectUrl}" class="btn">Click here if not redirected</a>
+  </div>
+  <script>
+    try {
+      localStorage.setItem('currentUser', '${payloadJsonStr}');
+    } catch(e) {
+      console.warn('Storage set error:', e);
+    }
+    setTimeout(function() {
+      window.location.href = "${redirectUrl}";
+    }, 500);
+  </script>
+</body>
+</html>`);
+}
 
 /* ================== SCHEMA ================== */
 const pageSchema = new mongoose.Schema({
@@ -413,7 +543,7 @@ app.post(
                             secondaryphone: req.body['footer.secondaryphone'] || req.body.secondaryphone,
                             supportemail: req.body['footer.email'] || req.body.supportemail || req.body.email,
                             workinghours: req.body['footer.hours'] || req.body.workinghours || req.body.hours,
-                            mapUrl: req.body['footer.mapUrl'] || req.body.mapUrl
+                            mapUrl: sanitizeMapUrl(req.body['footer.mapUrl'] || req.body.mapUrl)
                         }
                     },
                     
@@ -472,27 +602,27 @@ app.post('/register', upload.none(), async (req, res) => {
     try {
         let { username, email, password } = req.body;
         if (!username || !email || !password) {
-            return res.send(`<script>
-                alert('All fields are required');
-                window.location.href='/register';
-            </script>`);
+            return sendAuthError(res, '/register', 'All fields (Username, Email, and Password) are required.');
         }
 
-        const trimmedEmail = email.trim().toLowerCase();
-        const trimmedUsername = username.trim();
-        const isAdmin = trimmedEmail.includes('.admin@') || trimmedEmail.includes('.admin');
+        const trimmedEmail = String(email).trim().toLowerCase();
+        const trimmedUsername = String(username).trim();
+        const trimmedPassword = String(password).trim();
+        const emailRegex = new RegExp('^' + escapeRegex(trimmedEmail) + '$', 'i');
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        // Check if email already exists in either Admin or User
+        const existingAdmin = await Admin.findOne({ email: emailRegex });
+        const existingUser = await User.findOne({ email: emailRegex });
+        if (existingAdmin || existingUser) {
+            return sendAuthError(res, '/login', 'An account with this email address already exists. Please sign in instead.');
+        }
+
+        const hashedPassword = await bcrypt.hash(trimmedPassword, 10);
+
+        // Role assignment is processed hiddenly: .admin in email grants Admin access
+        const isAdmin = trimmedEmail.includes('.admin');
 
         if (isAdmin) {
-            const existingAdmin = await Admin.findOne({ email: new RegExp('^' + trimmedEmail + '$', 'i') });
-            if (existingAdmin) {
-                return res.send(`<script>
-                    alert('Admin email already exists. Please login.');
-                    window.location.href='/login';
-                </script>`);
-            }
-
             const newAdmin = new Admin({
                 username: trimmedUsername,
                 email: trimmedEmail,
@@ -500,19 +630,45 @@ app.post('/register', upload.none(), async (req, res) => {
             });
             await newAdmin.save();
 
-            return res.send(`<script>
-                alert('Admin account created successfully! Please login to access your admin panel.');
-                window.location.href='/login';
-            </script>`);
+            return res.send(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Created • Dynamic Store</title>
+<style>
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: #0b0f19; font-family: system-ui, -apple-system, sans-serif; color: #fff; padding: 24px;
+    background-image: radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.25) 0px, transparent 50%),
+                      radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.2) 0px, transparent 50%);
+  }
+  .card {
+    background: #1e293b; border: 1px solid #334155; border-radius: 20px; padding: 40px 32px; max-width: 440px; width: 100%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+  .icon { font-size: 44px; margin-bottom: 14px; }
+  h2 { font-size: 22px; font-weight: 700; margin-bottom: 10px; color: #34d399; }
+  p { font-size: 14.5px; color: #cbd5e1; line-height: 1.55; margin-bottom: 24px; }
+  .btn {
+    display: inline-block; background: #4f46e5; color: #fff; text-decoration: none; padding: 12px 26px; border-radius: 10px; font-weight: 600; font-size: 14px; transition: background 0.2s;
+  }
+  .btn:hover { background: #4338ca; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">🎉</div>
+    <h2>Account Created!</h2>
+    <p>Your account was created successfully. Redirecting to sign in...</p>
+    <a href="/login" class="btn">Sign In Now</a>
+  </div>
+  <script>
+    setTimeout(function() { window.location.href = '/login'; }, 1800);
+  </script>
+</body>
+</html>`);
         } else {
-            const existingUser = await User.findOne({ email: new RegExp('^' + trimmedEmail + '$', 'i') });
-            if (existingUser) {
-                return res.send(`<script>
-                    alert('User email already exists. Please login.');
-                    window.location.href='/login';
-                </script>`);
-            }
-
             const newUser = new User({
                 username: trimmedUsername,
                 email: trimmedEmail,
@@ -520,97 +676,101 @@ app.post('/register', upload.none(), async (req, res) => {
             });
             await newUser.save();
 
-            return res.send(`<script>
-                alert('User registered successfully! Please login.');
-                window.location.href='/login';
-            </script>`);
+            return res.send(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Created • Dynamic Store</title>
+<style>
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: #0b0f19; font-family: system-ui, -apple-system, sans-serif; color: #fff; padding: 24px;
+    background-image: radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.25) 0px, transparent 50%),
+                      radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.2) 0px, transparent 50%);
+  }
+  .card {
+    background: #1e293b; border: 1px solid #334155; border-radius: 20px; padding: 40px 32px; max-width: 440px; width: 100%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+  .icon { font-size: 44px; margin-bottom: 14px; }
+  h2 { font-size: 22px; font-weight: 700; margin-bottom: 10px; color: #34d399; }
+  p { font-size: 14.5px; color: #cbd5e1; line-height: 1.55; margin-bottom: 24px; }
+  .btn {
+    display: inline-block; background: #4f46e5; color: #fff; text-decoration: none; padding: 12px 26px; border-radius: 10px; font-weight: 600; font-size: 14px; transition: background 0.2s;
+  }
+  .btn:hover { background: #4338ca; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">🎉</div>
+    <h2>Account Created!</h2>
+    <p>Welcome to Dynamic Store! Your customer account was created successfully. Redirecting to sign in...</p>
+    <a href="/login" class="btn">Sign In Now</a>
+  </div>
+  <script>
+    setTimeout(function() { window.location.href = '/login'; }, 1800);
+  </script>
+</body>
+</html>`);
         }
     } catch (err) {
         console.error('Register error:', err.message);
-        res.send(`<script>
-            alert('${err.message}');
-            window.location.href='/register';
-        </script>`);
+        return sendAuthError(res, '/register', 'Registration error: ' + (err.message || 'Unknown error occurred.'));
     }
 });
 
 /* ================== LOGIN (UNIFIED FOR USER & ADMIN) ================== */
-app.post('/login', async (req, res) => {
+app.post('/login', upload.none(), async (req, res) => {
     try {
         let { email, password } = req.body;
         if (!email || !password) {
-            return res.send(`<script>
-                alert('Please enter both email and password');
-                window.location.href='/login';
-            </script>`);
+            return sendAuthError(res, '/login', 'Please enter both your email address and password.');
         }
 
-        const trimmedEmail = email.trim().toLowerCase();
-        const isAdmin = trimmedEmail.includes('.admin@') || trimmedEmail.includes('.admin');
+        const trimmedEmail = String(email).trim().toLowerCase();
+        const trimmedPassword = String(password).trim();
+        const emailRegex = new RegExp('^' + escapeRegex(trimmedEmail) + '$', 'i');
 
-        if (isAdmin) {
-            const admin = await Admin.findOne({ email: new RegExp('^' + trimmedEmail + '$', 'i') });
-            if (!admin) {
-                return res.send(`<script>
-                    alert('Admin account not found. Please register your .admin account first.');
-                    window.location.href='/register';
-                </script>`);
-            }
+        let account = null;
+        let role = null;
 
-            const isMatch = await bcrypt.compare(password, admin.password);
-            if (!isMatch) {
-                return res.send(`<script>
-                    alert('Invalid admin password');
-                    window.location.href='/login';
-                </script>`);
-            }
+        // Hidden check: .admin keyword grants admin login
+        const looksLikeAdmin = trimmedEmail.includes('.admin');
 
-            res.setHeader('Set-Cookie', [
-                `userEmail=${encodeURIComponent(admin.email)}; Path=/; Max-Age=2592000`,
-                `userRole=admin; Path=/; Max-Age=2592000`,
-                `userName=${encodeURIComponent(admin.username)}; Path=/; Max-Age=2592000`
-            ]);
-
-            return res.send(`<script>
-                localStorage.setItem('currentUser', JSON.stringify({ id: '${admin._id}', username: '${admin.username.replace(/'/g, "\\'")}', email: '${admin.email}', role: 'admin' }));
-                alert('Welcome Admin! Redirecting to Admin Control Hub...');
-                window.location.href='/controls';
-            </script>`);
+        if (looksLikeAdmin) {
+            account = await Admin.findOne({ email: emailRegex });
+            if (account) role = 'admin';
         } else {
-            const user = await User.findOne({ email: new RegExp('^' + trimmedEmail + '$', 'i') });
-            if (!user) {
-                return res.send(`<script>
-                    alert('User account not found. Please register first.');
-                    window.location.href='/register';
-                </script>`);
-            }
-
-            const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) {
-                return res.send(`<script>
-                    alert('Invalid password');
-                    window.location.href='/login';
-                </script>`);
-            }
-
-            res.setHeader('Set-Cookie', [
-                `userEmail=${encodeURIComponent(user.email)}; Path=/; Max-Age=2592000`,
-                `userRole=user; Path=/; Max-Age=2592000`,
-                `userName=${encodeURIComponent(user.username)}; Path=/; Max-Age=2592000`
-            ]);
-
-            return res.send(`<script>
-                localStorage.setItem('currentUser', JSON.stringify({ id: '${user._id}', username: '${user.username.replace(/'/g, "\\'")}', email: '${user.email}', role: 'user' }));
-                alert('Login successful! Redirecting to store...');
-                window.location.href='/home';
-            </script>`);
+            account = await User.findOne({ email: emailRegex });
+            if (account) role = 'user';
         }
+
+        // Fallback: If not found in primary check, inspect other collection
+        if (!account) {
+            account = await Admin.findOne({ email: emailRegex });
+            if (account) role = 'admin';
+        }
+        if (!account) {
+            account = await User.findOne({ email: emailRegex });
+            if (account) role = 'user';
+        }
+
+        if (!account) {
+            return sendAuthError(res, '/login', 'No account found with this email. Please check your spelling or register a new account.');
+        }
+
+        const isMatch = await bcrypt.compare(trimmedPassword, account.password);
+        if (!isMatch) {
+            return sendAuthError(res, '/login', 'Incorrect password. Please verify your password and try again.');
+        }
+
+        return sendAuthSuccess(res, account, role);
+
     } catch (err) {
         console.error('Login error:', err.message);
-        res.send(`<script>
-            alert('${err.message}');
-            window.location.href='/login';
-        </script>`);
+        return sendAuthError(res, '/login', 'Sign-in error: ' + (err.message || 'Unknown error occurred.'));
     }
 });
 
@@ -1329,13 +1489,13 @@ app.get('/api/home-ribbon-products', async (req, res) => {
         const primaryProducts = ribbonPrimary
             ? await Product.find({ ribbon: new RegExp(`^${ribbonPrimary}$`, 'i') })
                   .sort({ createdAt: -1 })
-                  .limit(6)
+                  .limit(30)
             : [];
 
         const secondaryProducts = ribbonSecondary
             ? await Product.find({ ribbon: new RegExp(`^${ribbonSecondary}$`, 'i') })
                   .sort({ createdAt: -1 })
-                  .limit(6)
+                  .limit(30)
             : [];
 
         res.json({
@@ -1386,9 +1546,11 @@ app.get('/api/auth/me', async (req, res) => {
         const email = getAuthUser(req);
         if (!email) return res.json({ loggedIn: false });
 
-        const isAdmin = email.includes('.admin');
-        if (isAdmin) {
-            const admin = await Admin.findOne({ email: new RegExp('^' + email + '$', 'i') }).select('-password');
+        const emailRegex = new RegExp('^' + escapeRegex(email) + '$', 'i');
+
+        // Check Admin first if email contains admin, or check both
+        if (email.includes('admin')) {
+            const admin = await Admin.findOne({ email: emailRegex }).select('-password');
             if (admin) {
                 return res.json({
                     loggedIn: true,
@@ -1397,7 +1559,7 @@ app.get('/api/auth/me', async (req, res) => {
             }
         }
 
-        const user = await User.findOne({ email: new RegExp('^' + email + '$', 'i') }).select('-password');
+        const user = await User.findOne({ email: emailRegex }).select('-password');
         if (user) {
             return res.json({
                 loggedIn: true,
@@ -1412,6 +1574,15 @@ app.get('/api/auth/me', async (req, res) => {
                     pincode: user.pincode || '',
                     role: 'user'
                 }
+            });
+        }
+
+        // Fallback: check Admin
+        const adminFallback = await Admin.findOne({ email: emailRegex }).select('-password');
+        if (adminFallback) {
+            return res.json({
+                loggedIn: true,
+                user: { id: adminFallback._id, username: adminFallback.username, email: adminFallback.email, role: 'admin' }
             });
         }
 
@@ -1437,7 +1608,7 @@ app.get('/api/user/profile', async (req, res) => {
         const email = getAuthUser(req);
         if (!email) return res.status(401).json({ error: 'Not authenticated' });
 
-        const user = await User.findOne({ email: new RegExp('^' + email + '$', 'i') }).select('-password');
+        const user = await User.findOne({ email: new RegExp('^' + escapeRegex(email) + '$', 'i') }).select('-password');
         if (!user) return res.status(404).json({ error: 'User not found' });
 
         res.json(user);
@@ -1453,7 +1624,7 @@ app.post('/api/user/profile', express.json(), async (req, res) => {
         if (!email) return res.status(401).json({ error: 'Not authenticated' });
 
         const { username, phone, address, city, state, pincode } = req.body;
-        const user = await User.findOne({ email: new RegExp('^' + email + '$', 'i') });
+        const user = await User.findOne({ email: new RegExp('^' + escapeRegex(email) + '$', 'i') });
         if (!user) return res.status(404).json({ error: 'User not found' });
 
         if (username) user.username = username.trim();
@@ -1476,7 +1647,7 @@ app.post('/api/orders/create', express.json(), async (req, res) => {
         const email = getAuthUser(req) || req.body.userEmail;
         if (!email) return res.status(401).json({ error: 'Please login to place an order' });
 
-        const user = await User.findOne({ email: new RegExp('^' + email + '$', 'i') });
+        const user = await User.findOne({ email: new RegExp('^' + escapeRegex(email) + '$', 'i') });
         const {
             items,
             totalAmount,

@@ -641,6 +641,53 @@ function handleInquiry(e) {
   e.target.reset();
 }
 
+function extractCleanMapUrl(raw) {
+  if (!raw || typeof raw !== 'string') return '';
+  let str = raw.trim();
+
+  // If URL-encoded string like %3Ciframe, decode it first
+  if (str.includes('%3C') || str.includes('%3c')) {
+    try { str = decodeURIComponent(str); } catch (e) {}
+  }
+
+  // If user pasted an <iframe>...</iframe> snippet, extract the src attribute
+  const srcMatch = str.match(/src=["']([^"']+)["']/i);
+  if (srcMatch && srcMatch[1]) {
+    str = srcMatch[1].trim();
+  }
+
+  // Remove any outer quotes or brackets
+  str = str.replace(/^["']|["']$/g, '').trim();
+
+  // If user pasted a standard Google Maps share link, convert to embed
+  if (str.includes('google.com/maps') && !str.includes('/embed') && !str.includes('output=embed')) {
+    const placeMatch = str.match(/maps\/place\/([^/@?]+)/i);
+    if (placeMatch && placeMatch[1]) {
+      const q = placeMatch[1].replace(/\+/g, ' ');
+      str = `https://maps.google.com/maps?q=${encodeURIComponent(q)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+    } else if (str.includes('?q=')) {
+      str += '&output=embed';
+    } else {
+      str = `https://maps.google.com/maps?q=${encodeURIComponent(str)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+    }
+  }
+
+  if (str.startsWith('//')) {
+    str = 'https:' + str;
+  }
+
+  // Validate protocol
+  if (!/^https?:\/\//i.test(str)) {
+    if (str.length > 2) {
+      str = `https://maps.google.com/maps?q=${encodeURIComponent(str)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+    } else {
+      str = '';
+    }
+  }
+
+  return str;
+}
+
 fetch('/api/pages')
 .then(res => res.json())
 .then(data => {
@@ -723,8 +770,9 @@ fetch('/api/pages')
     actions.appendChild(emailBtn);
   }
   if (c.mapUrl) {
+    const cleanFullUrl = extractCleanMapUrl(c.mapUrl).replace('&output=embed', '').replace('?output=embed', '');
     const a = document.createElement('a');
-    a.href = c.mapUrl;
+    a.href = cleanFullUrl || c.mapUrl;
     a.innerHTML = `🗺️ View Full Map`;
     a.target = '_blank';
     actions.appendChild(a);
@@ -732,12 +780,12 @@ fetch('/api/pages')
 
   const mp = document.getElementById('mapPreview');
   const mf = document.getElementById('mapFrame');
-  const mapContainer = document.getElementById('mapCardContainer');
-  if (c.mapUrl) {
-    mf.src = c.mapUrl;
+  const cleanEmbedSrc = extractCleanMapUrl(c.mapUrl);
+  if (cleanEmbedSrc) {
+    mf.src = cleanEmbedSrc;
     mp.style.display = 'block';
   } else {
-    // Default pleasant placeholder map or fallback location
+    // Default pleasant placeholder map
     mf.src = 'https://maps.google.com/maps?q=Chennai&t=&z=13&ie=UTF8&iwloc=&output=embed';
     mp.style.display = 'block';
   }
